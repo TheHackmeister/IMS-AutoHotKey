@@ -1,0 +1,160 @@
+<html class="no-js" lang="en"><head>
+<title></title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<meta name="author" content="Waste Management">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style type="text/css" media="screen"></style> 
+
+<link href="http://63.253.103.78/ims/styles/style-boilerplate.css" rel="stylesheet" type="text/css">
+
+<link href="http://63.253.103.78/ims/main.css.php" rel="stylesheet" type="text/css">
+<!--
+<link href="http://63.253.103.78/ims/styles/css/styles.css" rel="stylesheet" type="text/css" />
+-->
+<link href="http://fonts.googleapis.com/css?family=Cutive+Mono|Rokkitt:400,700" rel="stylesheet" type="text/css">
+
+<script src="http://63.253.103.78/ims/js/jquery.js"></script>
+<script src="http://63.253.103.78/ims/js/jquery-ui.js"></script>
+<script src="http://63.253.103.78/ims/js/ui/jquery.ui.widget.js"></script>
+<script src="http://63.253.103.78/ims/js/ui/jquery.ui.mouse.js"></script>
+<script src="http://63.253.103.78/ims/js/ui/jquery.ui.draggable.js"></script>
+<script src="http://63.253.103.78/ims/js/jquery-collision.min.js"></script>
+<script src="http://63.253.103.78/ims/js/jquery-ui-draggable-collision.js"></script>
+
+<script src="http://63.253.103.78/ims/main.js.php"></script>
+<!--
+<script src="http://63.253.103.78/ims/js/script-ck.js"></script>
+-->
+<!--
+<script type="text/javascript" src="http://63.253.103.78/ims/modules/maps/colorpicker/js/colorpicker.js"></script>
+<script type="text/javascript" src="http://63.253.103.78/ims/modules/maps/colorpicker/js/eye.js"></script>
+<script type="text/javascript" src="http://63.253.103.78/ims/modules/maps/colorpicker/js/utils.js"></script>
+<script type="text/javascript" src="http://63.253.103.78/ims/modules/maps/colorpicker/js/layout.js"></script>
+<link rel="stylesheet" media="screen" type="text/css" href="http://63.253.103.78/ims/modules/maps/colorpicker/css/colorpicker.css" />
+-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+
+<script>
+	$(function() {
+	    $( "#detailWrapper" ).draggable({ handle: "#detailTopNav", containment: "body" });
+	 });
+
+</script>
+</head>
+
+<body>
+
+<div id="dashboardWrapper">
+
+<div id="loadingWrapper" class="hide">
+	<div id="loading">
+		<div id="loader"></div>
+	</div>
+</div>
+
+<div id="pluginWrapper">
+	<div id="plugin" class="hide">
+		<div id="pluginTopNav"><a href="javascript: closePlugin();">X</a></div>
+		<div id="pluginBody"></div>
+	</div>
+</div>
+
+<div id="background"></div>
+
+<div id="detailWrapper" class="ui-draggable">
+	<div id="detail" class="hide ui-widget-content">
+		<div id="detailTopNav" class="ui-widget-header"><ul><li class="delete"><a href="javascript: closeDetail();">Close</a></li></ul></div>
+		<div id="detailBody"></div>
+	</div>
+</div>
+
+<div id="topMenuWrapper">
+	<div id="topMenuLeft">
+		<ul>
+			<li><a class="alert" href="javascript: loadForm('alerts.php');">&nbsp;</a></li>
+			<!--
+			<li class="warning"><a href="javascript: loadForm('alerts.php');">Alerts</a></li>
+			-->
+		</ul>
+	</div> 
+	<div id="topMenuRight">
+		<ul>
+			<li><a class="settings" href="javascript: loadForm('settings.php');">&nbsp;</a></li>
+			<li><a class="logout" href="javascript: logout();">&nbsp;</a></li>
+			<!--
+			<li class="tool"><a href="javascript: logout();">&nbsp;</a></li>
+			<li class="power"><a href="javascript: logout();">&nbsp;</a></li>	
+			-->		
+		</ul>
+	</div>
+</div>
+
+<div id="leftMenuWrapper">
+	<ul>
+		<li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Categories</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/categories/files/createcategory.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/categories/files/editcategory.php');">Edit</a></li></ul></li><li class="folder root open"><a href="#" onclick="showMenu(this); return false;">Customers</a>
+						<ul class="show"><li class="contents"><a href="javascript: loadForm('plugin/customers/files/createcustomer.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/customers/files/editcustomer.php');">Edit</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Inventory</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/files/managetransfers.php');">Manage Transfers</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/files/scrap.php');">Scrap</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Assets</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/files/createasset.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/files/editasset.php');">Edit</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/files/editassettransfer.php');">Transfer</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Ebay</a>
+			<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/files/editassetebayauctiontransfer.php', '');">Transfer Assets to Auction</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Condition</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/condition/files/createcondition.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/condition/files/editcondition.php');">Manage</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/condition/files/assignconditiontype.php');">Assign to Type</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Custom Fields</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/customfields/files/createfield.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/customfields/files/editfield.php');">Manage</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/customfields/files/assignfieldtype.php');">Assign to Type</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">SPEC</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/spec/files/createspec.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/spec/files/editspec.php');">Manage</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/spec/files/assignspectype.php');">Assign</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Manage Entry Types</a>
+			<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/spec/files/editoptionlist.php', '');">Option Lists</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/spec/files/editsearchlist.php', '');">Search Lists</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Categories</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/spec/plugin/categories/files/assignspeccategory.php');">Assign To SPEC</a></li></ul></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Testing</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/testing/files/createtest.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/testing/files/edittest.php');">Manage</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/testing/files/assigntestproduct.php');">Assign</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Testing Template</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/assets/plugin/testing/plugin/testingtemplate/files/assigntest.php');">Assign Test To Product Type</a></li></ul></li></ul></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Product</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/files/createproduct.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/files/editproduct.php');">Manage</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Inventory</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/inventory/files/adjustinventory.php');">Adjust Values</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Manufacturer</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/manufacturer/files/createmanufacturer.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/manufacturer/files/editmanufacturer.php');">Manage</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Parts</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/parts/files/createpart.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/parts/files/editpart.php');">Manage</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/parts/files/assignpartproduct.php');">Assign</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Parts Template</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/parts/plugin/partstemplate/files/assignpart.php');">Assign Parts To Product Type</a></li></ul></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Types</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/types/files/createproducttype.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/inventory/plugin/product/plugin/types/files/editproducttype.php');">Manage</a></li></ul></li></ul></li></ul></li><li class="folder root open"><a href="#" onclick="showMenu(this); return false;">Locations</a>
+						<ul class="show"><li class="contents"><a href="javascript: loadForm('plugin/locations/files/createlocation.php');">Create Single</a></li><li class="contents"><a href="javascript: loadForm('plugin/locations/files/createlocationmultiple.php');">Create Multiple</a></li><li class="contents"><a href="javascript: loadForm('plugin/locations/files/editlocation.php');">Manage</a></li><li class="contents"><a href="javascript: loadForm('plugin/locations/files/editlocationtransfer.php');">Transfer</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Types</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/locations/plugin/type/files/createlocationtype.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/locations/plugin/type/files/editlocationtype.php');">Manage</a></li></ul></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Maps</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/maps/files/createmap.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/maps/files/editmap.php');">Manage</a></li><li class="contents"><a href="javascript: loadForm('plugin/maps/files/findassetlocation.php');">Find Asset Location</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Keys</a>
+			<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/maps/files/createmapkey.php', 'initializeDemo();initializeColorPicker();');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/maps/files/editmapkey.php', '');">Manager</a></li></ul></li></ul></li><li class="folder root open"><a href="#" onclick="showMenu(this); return false;">Purchase Orders</a>
+						<ul class="show"><li class="contents"><a href="javascript: loadForm('plugin/po/files/createorder.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/po/files/editorder.php');">Manage</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Reports</a>
+			<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/po/files/cogbydate.php', '');">COG by Date Range</a></li></ul></li></ul></li><li class="folder root open"><a href="#" onclick="showMenu(this); return false;">Reports</a>
+						<ul class="show"><li class="contents"><a href="javascript: loadForm('plugin/reports/files/externalassetcheck.php');">External Asset Check</a></li><li class="contents"><a href="javascript: loadForm('plugin/reports/files/assetcountbylocation.php');">Asset Count By Location - Detail</a></li><li class="contents"><a href="javascript: loadForm('plugin/reports/files/assetcountbylocationshort.php');">Asset Count By Location - Short</a></li><li class="contents"><a href="javascript: loadForm('plugin/reports/files/lockedlocationassetcount.php');">Locked Location Asset Count</a></li><li class="contents"><a href="javascript: loadForm('plugin/reports/files/lockedlocationslist.php');">Locked Locations List</a></li><li class="contents"><a href="javascript: loadForm('plugin/reports/files/assethistory.php');">Asset History</a></li><li class="contents"><a href="javascript: loadForm('plugin/reports/files/dailyreport.php');">Asset Daily Report</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Sales Orders</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/so/files/createsalesorder.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/so/files/editsalesorder.php');">Manage</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Reports</a>
+			<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/so/files/sosummary.php', '');">Summary</a></li><li class="contents"><a href="javascript: loadForm('plugin/so/files/itemnumbermap.php', '');">Item Number Map</a></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Returns</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/so/plugin/exchanges/files/createreturn.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/so/plugin/exchanges/files/editreturn.php');">Edit</a></li></ul></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Users</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/users/files/createuser.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/users/files/edituser.php');">Edit</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Permissions</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/users/plugin/permissions/files/setpolicy.php');">Assignments</a></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Groups</a>
+			<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/users/plugin/permissions/files/creategroup.php', '');">Create Group</a></li><li class="contents"><a href="javascript: loadForm('plugin/users/plugin/permissions/files/editgroup.php', '');">Edit Group</a></li><li class="contents"><a href="javascript: loadForm('plugin/users/plugin/permissions/files/assignusergroup.php', '');">User -&gt; Groups</a></li><li class="contents"><a href="javascript: loadForm('plugin/users/plugin/permissions/files/assigngroupuser.php', '');">Group -&gt; Users</a></li><li class="contents"><a href="javascript: loadForm('plugin/users/plugin/permissions/files/assigngroup.php', '');">Group -&gt; Groups</a></li></ul></li></ul></li></ul></li><li class="folder root closed"><a href="#" onclick="showMenu(this); return false;">Vendors</a>
+						<ul class="hide"><li class="contents"><a href="javascript: loadForm('plugin/vendors/files/createvendor.php');">Create</a></li><li class="contents"><a href="javascript: loadForm('plugin/vendors/files/editvendor.php');">Manage</a></li></ul>	</li></ul>
+</div>
+
+<div id="dashboardBody"><div id="customersWrapper">	
+	<div class="divRow">
+		<div id="customerHeader" class="divCell">
+			Edit Customer
+		</div>
+	</div>
+
+	<div class="divRow">
+		<div id="editCustomerSearch" class="divCell">		
+			Search<br>
+			<input type="text" id="searchCustomerText">
+			<input type="button" value="search" onclick="searchCustomer()">
+			<br><br>
+
+			<div id="editCustomerSearchResults"></div>
+		</div>	
+
+		<div id="editCustomerForm" class="divCell">
+			<form>
+				<input type="text" id="custNumber" placeholder="Customer Number"><br>
+				<input type="text" id="custName" placeholder="Customer Name"><br>
+				<input type="button" value="save">
+			</form>
+			<div id="editCustomerResponse"></div>
+		</div>
+	</div>
+</div></div></div></body></html>
