@@ -1,4 +1,5 @@
 //HTML for boxing page.
+/*jshint multistr: true */
 document.getElementById("dashboardBody").innerHTML = 'Create box<br/> \
 	<div style="height:330px;"> \
 		<div class="divCell" style="padding-right:75px;"> \
