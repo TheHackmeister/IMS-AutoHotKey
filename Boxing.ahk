@@ -507,8 +507,9 @@ CurrentLocation.prototype.runReport = function () {
 
 
 //This form manages the asset transfer boxes. 
-var TransferAssetsForm = function(id) {
+var TransferAssetsForm = function(id, soundObject) {
 	InputForm.call(this,id);
+	this.beep = soundObject;
 	this.location = $("#" + id + 'Location');
 	this.checkType = $("#" + id +  'SimpleCheck');
 	this.assets  = $("#" + id + 'Assets');		
@@ -622,13 +623,13 @@ TransferAssetsForm.prototype.countAssets = function () {
 //I'd like to pass in a beepAlert reference rather than call it directly.
 TransferAssetsForm.prototype.goodAssetAlert = function () {
 	if(this.count.html() == "(40 assets)") 
-		beepAlert.play(1000, "Good");
+		this.beep.play(1000, "Good");
 	else
-		beepAlert.play(150, "Good");
+		this.beep.play(150, "Good");
 }
 TransferAssetsForm.prototype.badAssetAlert = function (message) {
 	var loc = this.assets.attr('id');
-	beepAlert.play(500, "Bad", $.proxy(function(){this.badAssetAlertCallback(message);},this));
+	this.beep.play(500, "Bad", $.proxy(function(){this.badAssetAlertCallback(message);},this));
 //	beepAlert.playBad($.proxy(function(){this.badAssetAlertCallback(mesage);},this));
 }
 
@@ -661,22 +662,22 @@ SoundAlert.prototype.play = function (time, freq, callback) {
 			if(typeof(callback != 'undefined')) callback();
 		},time);
 }
+
+
+
+
+
+
 var beepAlert = new SoundAlert();
-
-
-
-
-
-
 //This loads the objects above. 
 var loca = $('#currentLocationLocation');
 var currentLocation = new CurrentLocation("currentLocation"); //On change
 loca.attr('id', 'createLocationLocation');
 var createLoc = new CreateLocation("createLocation");  //Sets the location
 loca.attr('id', 'currentBoxLocation');
-var currentBox = new TransferAssetsForm("currentBox"); //Gets location
+var currentBox = new TransferAssetsForm("currentBox", beepAlert); //Gets location
 loca.attr('id', 'currentLocationLocation');
-var otherTransfer = new TransferAssetsForm("otherTransfer");
+var otherTransfer = new TransferAssetsForm("otherTransfer", beepAlert);
  )
 StringReplace, JSText2, JSText2, `t, ,A
 RunJavaScriptLong(JSText2)
