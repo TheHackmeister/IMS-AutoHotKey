@@ -659,7 +659,7 @@ SoundAlert.prototype.play = function (time, freq, callback) {
 		var soundObject = this.osc;
 		window.setTimeout(function(){
 			soundObject.disconnect();
-			if(typeof(callback != 'undefined')) callback();
+			if(typeof(callback) != 'undefined') callback();
 		},time);
 }
 
