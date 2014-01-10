@@ -89,45 +89,6 @@ RunJavaScriptLong(JSText)
 
 JSText2 = 
 (
-//Creates an object that makes beep noises. Used for quality control checks later on.
- function soundAlert() {
-	this.context = new webkitAudioContext(); 
-	this.osc = this.context.createOscillator(),  
-	this.osc.type = 2;  
-	this.osc.frequency.value = 49;               
-
-	this.play = play;
-	function play(time,message) {
-		this.osc.connect(this.context.destination);  
-		this.osc.noteOn(0); 
-		var _this = this;
-		window.setTimeout(function(){
-			_this.osc.disconnect();
-			if(message){
-				alert(message);
-			}
-		},time);
-	}
-	
-	this.playGood = playGood;
-	function playGood() {
-		this.osc.frequency.value = 520;
-		this.play(150);
-	}
-	
-	this.playBad = playBad;
-	function playBad(message) {
-		this.osc.frequency.value = 98;
-		this.play(500,message);
-	}	
-	this.play40 = function () {	
-		this.osc.frequency.value = 520;
-		this.play(1000);
-	}
-}
-var beepAlert = new soundAlert();
-
-
 //Creates an asset object. Will be inherited by other objects.
 var Asset = function(id,type) {
 	Object.defineProperty(this,"assetID", {value: id, writable : true, enumerable : false, configurable : true});
@@ -661,18 +622,52 @@ TransferAssetsForm.prototype.countAssets = function () {
 //I'd like to pass in a beepAlert reference rather than call it directly.
 TransferAssetsForm.prototype.goodAssetAlert = function () {
 	if(this.count.html() == "(40 assets)") 
-		beepAlert.play40();
+		beepAlert.play(1000, "Good");
 	else
-		beepAlert.playGood();
+		beepAlert.play(150, "Good");
 }
 TransferAssetsForm.prototype.badAssetAlert = function (message) {
 	var loc = this.assets.attr('id');
-	if(location != "") {
+	beepAlert.play(500, "Bad", $.proxy(function(){this.badAssetAlertCallback(message);},this));
+//	beepAlert.playBad($.proxy(function(){this.badAssetAlertCallback(mesage);},this));
+}
+
+TransferAssetsForm.prototype.badAssetAlertCallback = function (message) {
+//	alert(message);
+	var response = confirm(message + "\nRemove asset?");
+	
+	if(response==true) {
 		this.assets.val(this.assets.val().replace(this.currentAsset.assetID + '\n',''));
 		this.countAssets();
 	}
-	beepAlert.playBad(message);
 }
+
+//Creates an object that makes beep noises. Used for quality control checks later on.
+ function SoundAlert() {
+	this.context = new webkitAudioContext(); 
+	this.osc = this.context.createOscillator(),  
+	this.osc.type = 2;  
+	this.osc.frequency.value = 49;               
+}
+SoundAlert.prototype.play = function (time, freq, callback) {
+		if(freq == "Good") this.osc.frequency.value = 520;
+		if(freq == "Bad") this.osc.frequency.value = 98;
+		
+		this.osc.connect(this.context.destination);  
+		this.osc.noteOn(0);
+		var soundObject = this.osc;
+		window.setTimeout(function(){
+			soundObject.disconnect();
+			if(typeof(callback != 'undefined')) callback();
+		},time);
+}
+var beepAlert = new SoundAlert();
+
+
+
+
+
+
 //This loads the objects above. 
 var loca = $('#currentLocationLocation');
 var currentLocation = new CurrentLocation("currentLocation"); //On change
