@@ -54,42 +54,7 @@ $(window).keydown(function(event) {
 document.title = 'IMS';
 	)
 	
-	TempClip := clipboard
-	Sleep, 300
-	clipboard = %JSText%
-	Sleep, 300
-	If(WinActive("ahk_group NOIMSChrome"))
-	{
-		If (!WinActive(,"Developer Tools - http://63.253.103.78/ims/dashboard.php"))
-			Send ^+j
-		BlockOff()
-		WinWait,,Developer Tools - http://63.253.103.78/ims/dashboard.php
-		Sleep, 1000
-		BlockOn()
-		Send ^v
-		Send {Enter}
-		Send ^+j
-		WinWaitNotActive,,Developer Tools - http://63.253.103.78/ims/dashboard.php
-	} Else {
-		Send +{F4}
-		BlockOff()
-		WinWaitActive, Scratchpad
-		BlockOn()
-		Sleep, 1000
-		Send ^v
-		Send ^r
-		
-		WinWaitActive, *Scratchpad
-		Send !{F4}
-		WinWaitActive, Unsaved Changes
-		Send !n
-		WinWaitNotActive, Unsaved Changes
-		WinWaitActive, IMS - Mozilla Firefox
-		Sleep, 1000
-	}
-	clipboard := TempClip
-	Sleep, 300
-	
+RunJavascriptSafe(JSText)
 	ImproveIMSText =
 	(
 	
@@ -183,6 +148,7 @@ function newWindow(string, file, plugin){
 	if (plugin == 'assets'){
 		wnd.document.close();
 		wnd.onload = function( ) {
+			wnd.document.title = 'Print Ready';
 			wnd.printWindow();
 		}
 	}

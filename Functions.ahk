@@ -251,7 +251,7 @@ BlockOff()
 ;		WaitForPrint()
 ;	}
 
-	Send !{F4}
+	;Send !{F4}
 	WinWaitActive, ahk_group IMS
 	
 }
@@ -262,6 +262,7 @@ WaitForPrint()
 
 	GroupAdd, IMSPrint, Print
 	GroupAdd, IMSPrint, ,Print
+	GroupAdd, IMSPrint, Print Ready - Google Chrome
 	WinWaitActive, ahk_group IMSPrint
 	While(WinActive("ahk_group IMSPrint"))
 	{
@@ -316,16 +317,17 @@ RunJavascriptSafe(JSText)
 	Sleep, 300
 	If(WinActive("Chrome"))
 	{
-		If (!WinActive(,"Developer Tools - http://63.253.103.78/ims/dashboard.php"))
-			Send ^+j
+		;If (!WinActive(,"Developer Tools - http://63.253.103.78/ims/dashboard.php"))
+		Send ^+j
 		BlockOff()
-		WinWait,,Developer Tools - http://63.253.103.78/ims/dashboard.php
+		;WinWait,,Developer Tools - http://63.253.103.78/ims/dashboard.php
 		Sleep, 1000
 		BlockOn()
 		Send ^v
 		Send {Enter}
 		Send ^+j
-		WinWaitNotActive,,Developer Tools - http://63.253.103.78/ims/dashboard.php
+		;WinWaitNotActive,,Developer Tools - http://63.253.103.78/ims/dashboard.php
+		Sleep, 1000
 	} Else {
 		Send +{F4}
 		BlockOff()
