@@ -140,7 +140,7 @@ AmIIMS()
 	GroupAdd, IMSLoading, IMS (Loading) - Google Chrome
 
 	
-	If (WinActive("ahk_group IMS"))
+	If (WinActive("ahk_group IMS") OR WinActive("ahk_group IMSLoading"))
 	{
 ;		SetIMSBrowser()
 		return True
