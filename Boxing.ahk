@@ -11,9 +11,9 @@ setupBoxing()
 	StringReplace, JSText, JSText, `t, ,A
 	RunJavaScriptLong(JSText)
 
-	FileRead, JSText, Boxing-HTML.js
-	StringReplace, JSText, JSText, `t, ,A
-	RunJavaScriptLong(JSText)	
+;;	FileRead, JSText, Boxing-HTML.js
+;	StringReplace, JSText, JSText, `t, ,A
+;	RunJavaScriptLong(JSText)	
 	
 	FileRead, JSText, Boxing-CreateLoc.js
 	StringReplace, JSText, JSText, `t, ,A
