@@ -3,9 +3,9 @@ setupBoxing()
 	AMIIMS()
 	BlockOn()
 	
-	FileRead, JSText, Boxing-HTML.js
-	StringReplace, JSText, JSText, `t, ,A
-	RunJavaScriptLong(JSText)
+;	FileRead, JSText, Boxing-HTML.js
+;	StringReplace, JSText, JSText, `t, ,A
+;	RunJavaScriptLong(JSText)
 
 	FileRead, JSText, Assets.js
 	StringReplace, JSText, JSText, `t, ,A
