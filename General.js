@@ -1,4 +1,7 @@
+GeneralJS =
+(
 //This stuff improves general IMS functionality	
+
 //This allows me to call something after an AJAX call without overloading another function.
 var ajaxCallback = function (func) {
 	var wrapper = function() {
@@ -28,36 +31,6 @@ hideLoading = function (){
 	$('#loadingWrapper').trigger('hasFinished');
 	document.title = 'IMS';
 }
-
-	
-
-// Array Remove - By John Resig (MIT Licensed)
-Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-};
-
-//If there is only one PO result found, it is selected.
-function clickTopOption() {
-	ajaxCallback(function(){
-		if($('.search').length == 1) {
-			$('.search a').eq(0)[0].click();
-		}	
-	});
-}
-
-// Triggers for selecting PO
-$('#dashboardBody').on('keyup', '#searchOrderText', function(e) {
-if(e.keyCode == 10 || e.keyCode == 13) {
-	searchOrder();
-	clickTopOption();
-}
-});
-$('#dashboardBody').on('click', '#editOrderSearch [value="search"]', function(e) {
-	clickTopOption();
-});
-
 
 //Overloads the newWindow function. Adds clicking the print button on page load and adds support for Firefox. 
 function newWindow(string, file, plugin){ 
@@ -118,6 +91,62 @@ function getEditAssetID() {
 	return document.getElementById("editAssetID").value;
 }
 
+//Automatically locks a PO when saved. Also sets focus to the product description box after save.
+var saveAssetOld = saveAsset;
+var saveAsset = function(asset) {
+	var id = "editOrderlineResult" + arguments[0];
+	$("." + id).eq(0).on("DOMSubtreeModified",saveAssetListener(asset,id));
+	saveAssetOld.apply(this, arguments);
+};
+var saveAssetListener = function (asset,id) {
+
+	var handler = function (asset,id) {
+		//If we're not adding to a PO, don't lock condition. 
+		if(!document.getElementById("addAssetDiv")) return;
+		
+		saveAssetCondition(asset);		
+        $('#addAssetProductSearchText').focus();    
+		
+		$("." + id).eq(0).off("DOMSubtreeModified");
+		$("." + id).eq(0).html($("." + id).eq(0).html() + " ");
+	}.bind(this, asset, id);
+	return handler;
+}
+
+
+
+///////////////
+//Adds features
+///////////////
+
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
+//If there is only one PO result found, it is selected.
+function clickTopOption() {
+	ajaxCallback(function(){
+		if($('.search').length == 1) {
+			$('.search a').eq(0)[0].click();
+		}	
+	});
+}
+
+// Triggers for selecting PO
+$('#dashboardBody').on('keyup', '#searchOrderText', function(e) {
+if(e.keyCode == 10 || e.keyCode == 13) {
+	searchOrder();
+	clickTopOption();
+}
+});
+$('#dashboardBody').on('click', '#editOrderSearch [value="search"]', function(e) {
+	clickTopOption();
+});
+
 
 //This is the base for the form objects. Just has an ID and a function to change the ID of $ objects without trouble.
 var InputForm = function (id) {
@@ -161,4 +190,44 @@ SoundAlert.prototype.play = function (time, freq, callback) {
 			if(typeof(callback) != 'undefined') callback();
 		},time);
 }
+
+
+//Would like to implement an arrayed version. 
+function switchSize(id) {
+	ajaxCallback(replaceSize);
+	selectAsset(id);
+}
+
+
+function swapHDDConnector() {
+	swapProductName("IDE", "SATA");
+}
+
+function swapHDDFormFactor() {
+	swapProductName("3.5 IN", "LPTP");
+}
+
+function swapProductName(swap1, swap2) {
+	var item = $('#editOrderlineProductSearchText' + getEditAssetID()).val()
+	item = item.replace("GENERIC ","");
+	if(item.indexOf(swap1) > 0) {
+		item = item.replace(swap1, swap2);
+	} else if (item.indexOf(swap2) > 0 ) {
+		item = item.replace(swap2, swap1);
+	} else {
+		return;
+	}
+	
+	$('#editOrderlineProductSearchText' + getEditAssetID()).val(item);
+	ajaxCallback(clickNewAssetName);
+	$('#editOrderlineProductSearchText' + getEditAssetID()).trigger('keyup');
+}
+
+
+function clickNewAssetName() {
+	$('#editOrderlineProductSearchResults' + getEditAssetID() + " a").eq(0).click();
+	saveAsset(getEditAssetID());
+	//ajaxCallback();
+}
+)
 

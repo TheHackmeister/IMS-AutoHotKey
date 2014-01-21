@@ -1,4 +1,5 @@
-	
+AssetsJS = 
+(	
 //Creates an asset object. Will be inherited by other objects.
 var Asset = function(id,type) {
 	Object.defineProperty(this,"assetID", {value: id, writable : true, enumerable : false, configurable : true});
@@ -199,3 +200,4 @@ firstArray = "71,AMD ATHLON 4,Pentium 3,AMD:\
 		cpuArray.push(el.split(','));
 	});
 Laptop.prototype.cpuArray = cpuArray;
+)

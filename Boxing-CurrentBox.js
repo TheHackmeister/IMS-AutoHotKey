@@ -1,3 +1,5 @@
+BoxingCurrentBoxJS = 
+(
 //This form manages the asset transfer boxes. 
 var TransferAssetsForm = function(id, soundObject) {
 	InputForm.call(this,id);
@@ -134,3 +136,4 @@ TransferAssetsForm.prototype.badAssetAlertCallback = function (message) {
 		this.countAssets();
 	}
 }
+)

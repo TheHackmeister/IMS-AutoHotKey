@@ -1,4 +1,6 @@
-
+TestingHDJS = 
+(
+/*
 var ajaxCallback = function (func) {
 	var wrapper = function() {
 //		$('#loadingWrapper').off('hasFinished')
@@ -63,7 +65,7 @@ function newWindow(string, file, plugin){
 		}
 	}
 }
-
+*/
 ////////////////////////////////////////////////
 var Asset = function (id) {
 	this.id = id;
@@ -238,3 +240,4 @@ document.getElementById("dashboardBody").innerHTML = '<div>Desk Location: <input
 	<div id="asset2PO" style="visibility:hidden; width:1px; height:1px;"> </div>\
 </div>';
 test = new TestInterface('asset1','asset2');
+)

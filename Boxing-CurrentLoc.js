@@ -1,4 +1,5 @@
-
+BoxingCurrentLocJS = 
+(
 //Current Location
 //This is the object responsible for managing the current location fields, these are the current box, run report button, and the edit location field.
 var CurrentLocation = function(id) {
@@ -92,3 +93,4 @@ CurrentLocation.prototype.transferLocationCallback = function (changedElements) 
 CurrentLocation.prototype.runReport = function () {
 	newWindow('locations=' + this.location.val() + '&shipped=true&so=true' , 'assetcountbylocationshortprocess.php', 'reports');
 }
+)

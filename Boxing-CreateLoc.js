@@ -1,4 +1,5 @@
-
+BoxingCreateLocJS = 
+(
 //Create Location
 //This creates an object that manages the creation of new IMS boxes. 
 var CreateLocation = function (id) {
@@ -86,4 +87,4 @@ CreateLocation.prototype.searchLocationCallback = function (changedElements) {
 	this.searchResults.html(response);
 	this.searchResults.show();
 }
-
+)

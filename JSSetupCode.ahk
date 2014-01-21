@@ -1,4 +1,6 @@
-﻿SetupIMSPage() 
+﻿
+
+SetupIMSPage() 
 {
 BlockOff()
 	If (!WinActive("ahk_group NOIMS")){
@@ -7,16 +9,11 @@ BlockOff()
 		Exit
 	}
 BlockOn()	
-	FileRead, JSText, SetupIMS.js
-	RunJavascriptSafe(JSText)
-	
-	FileRead, ImproveIMSText, General.js
-	StringReplace, ImproveIMSText, ImproveIMSText, `t, ,A
-	RunJavaScriptLong(ImproveIMSText)
+	global SetupIMSJS
+	global GeneralJS
 
-	FileRead, ImproveIMSText, General-2.js
-	StringReplace, ImproveIMSText, ImproveIMSText, `t, ,A
-	RunJavaScriptLong(ImproveIMSText)
+	RunJavascriptSafe(SetupIMSJS)
 	
+	RunJavaScriptLong(GeneralJS)
 BlockOff()
 }

@@ -1,4 +1,5 @@
-
+CountInLocationJS = 
+(
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
@@ -56,3 +57,4 @@ productArray.forEach(function(i2) {
 	arrayS += i2[0] + ":" + i2[1] + "<br>\n";
 });
 $("<div>" + arrayS + "</div>").insertAfter('#assetCountWrapper')
+)

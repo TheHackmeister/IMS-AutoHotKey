@@ -1,3 +1,5 @@
+SetupIMSJS = 
+(
 window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+0008'||e.keyIdentifier=='Backspace'){if(e.target==document.body||e.target.type=="radio"){ e.preventDefault();}}},true);
 	var CDiv = document.createElement('div');
 	var txtarea = document.createElement('textarea');
@@ -41,3 +43,4 @@ $(window).keydown(function(event) {
   }
  });
 document.title = 'IMS';
+)
