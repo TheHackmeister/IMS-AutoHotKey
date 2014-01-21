@@ -51,6 +51,10 @@ return
 setupBoxing()
 return
 
+::IMSHDTesting::
+setupHDTest()
+return
+
 ::BoxingSimple::
 JSTextB = 
 (

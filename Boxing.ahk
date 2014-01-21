@@ -34,6 +34,15 @@ setupBoxing()
 BlockOff()
 }
 
+setupHDTest()
+{
+	AMIIMS()
+	FileRead, JSText, Testing-HD.js
+	StringReplace, JSText, JSText, `t, ,A
+	RunJavaScriptLong(JSText)
+}
+
+
 countInLocation()
 {
 
