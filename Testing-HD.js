@@ -2,35 +2,26 @@ TestingHDJS =
 (
 ////////////////////////////////////////////////
 var Asset = function (id) {
+	
 	this.id = id;
-	this.assetID;
+	this.testing = "yes";
 	this.asset = $('#' + id + 'ID');
-	this.transferLocation = $('#' + id + 'Location');
-	this.transferResults = $('#' + id + 'Results');
+//	this.transferLocation = $('#' + id + 'Location');
+//	this.transferResults = $('#' + id + 'Results');
 	this.editAssetDiv = $('#' + id + 'EditDiv');
 	this.productDiv = $('#' + id + 'Product');
 }
+Asset.prototype = Object.create(InputForm.prototype);
+
+Asset.prototype.setAssetID = function (id) {
+	this.asset.val(id);
+//alert("12" + this.testing);
+//	this.asset.trigger('changed');
+}
 
 Asset.prototype.getAssetID = function() {
+//alert("11" + this.testing);
 	return this.asset.val();
-}
-
-//Could I simplify this to simple add and remove the ID?
-Asset.prototype.changeDivs = function() {
-	 var elements = [];
-	 for (var i = 0; i < arguments.length; i += 2) {
-		var arg = arguments[i];
-		arg.originalID = arg.attr('id');
-		arg.attr('id', arguments[i+1]);
-		elements.push(arg);
-	 }
-	 return elements;
-}
-
-Asset.prototype.restoreDivs = function(elements) {
-	elements.forEach(function(el) {
-		el.attr('id', el.originalID);
-	});
 }
 
 Asset.prototype.transfer = function() {
@@ -39,25 +30,48 @@ Asset.prototype.transfer = function() {
 	this.assetID = this.asset.val();
 	transferAssets();
 }
+
 Asset.prototype.transferCallback = function(changedElements) {
 	this.restoreDivs(changedElements);
 	this.asset.val(this.assetID);
 	this.asset.trigger('transfered');
 }
 
-Asset.prototype.loadAsset = function () {
+Asset.prototype.load = function (id) {
+alert("2 " + id);
+	if(typeof(id) != 'undefined') {
+		this.setAssetID(id); 
+	}
 	if(this.getAssetID() == "") {
 		return;
 	}
 	var changedElements = this.changeDivs(this.editAssetDiv, "editAssetForm"); 
-	ajaxCallback.call(this,function(){this.loadAssetCallback(changedElements)});
-	selectAsset(this.getAssetID());
+	ajaxCallback.call(this,function(){this.loadCallback(changedElements);});
+	window.setTimeout(function() {selectAsset(id)}, 5000);
 }
 
-Asset.prototype.loadAssetCallback = function (changedElements) {
+Asset.prototype.loadCallback = function (changedElements) {
+alert("3");
 	this.restoreDivs(changedElements);
 	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val());
 	this.asset.trigger('loaded');
+}
+
+Asset.prototype.setCondition = function (condition) {
+	if(typeof(condition) != 'undefined') {
+		$('.' + this.id + ' [name="test2"]').eq(condition).prop('checked', true);
+		$('.' + this.id + ' [name="test15"]').eq(condition).prop('checked', true);
+	}
+	this.asset.trigger('conditionSet');
+}
+
+Asset.prototype.save = function (condition) {
+	ajaxCallback.call(this,function(){this.saveCallback()});
+	saveAsset(this.getAssetID());
+}
+
+Asset.prototype.saveCallback = function () {
+	this.asset.trigger('saved');
 }
 
 Asset.prototype.printTag = function () {
@@ -79,7 +93,7 @@ var TestHd = function (id) {
 //	this.printTagOption = $('#' + id + '');
 	
 //Event handlers 
-	this.asset.asset.on('change', $.proxy(function() {this.loadAsset();},this.asset));
+	this.asset.asset.on('change', $.proxy(function() {this.load();},this.asset));
 	this.asset.asset.on('loaded', $.proxy(function () {this.printTag();},this.asset));
 	this.asset.asset.on('loaded', $.proxy(function () {this.loadPONotes();},this));
 	this.asset.editAssetDiv.on('click', '[value="save"]' , $.proxy(function() {this.setConditionAndSave();},this));
@@ -177,15 +191,21 @@ var SetAssetCondition = function (id) {
 	this.results = $("#" + id + 'Results');
 	this.count = $("#" + id + 'Count');
 	this.submit = $("#" + id + 'Button');
-	this.assetTempLocation = $("#" + id + 'Temp');
+	this.asset = new Asset(id);
+//	this.assetTempLocation = $("#" + id + 'Temp');
 	
 	
 	
 	
 //Event Handlers
-	this.assets.on('loaded', $.proxy(function() {this.setConditionAndSave(0);},this));
-	this.assets.on('saved', $.proxy(function() {this.nextOnList();},this));
-	this.submit.on('click',$.proxy(function() {this.setupSetCondition();},this));
+	this.submit.on('click',$.proxy(function() {this.startSettingCondition();},this));
+	this.asset.asset.on('loaded', $.proxy(function () {this.setCondition(0);},this.asset));
+	this.asset.asset.on('conditionSet', $.proxy(function() {this.save();},this.asset));
+	this.asset.asset.on('saved', $.proxy(function() {this.continueSettingCondition();}, this));
+	
+//	this.assets.on('loaded', $.proxy(function() {this.setConditionAndSave(0);},this));
+//	this.assets.on('saved', $.proxy(function() {this.nextOnList();},this));
+
 	
 	
 	
@@ -193,23 +213,7 @@ var SetAssetCondition = function (id) {
 		this.countAssets();
 	},this));
 }
-//Could I simplify this to simple add and remove the ID?
-SetAssetCondition.prototype.changeDivs = function() {
-	 var elements = [];
-	 for (var i = 0; i < arguments.length; i += 2) {
-		var arg = arguments[i];
-		arg.originalID = arg.attr('id');
-		arg.attr('id', arguments[i+1]);
-		elements.push(arg);
-	 }
-	 return elements;
-}
-
-SetAssetCondition.prototype.restoreDivs = function(elements) {
-	elements.forEach(function(el) {
-		el.attr('id', el.originalID);
-	});
-}
+SetAssetCondition.prototype = Object.create(InputForm.prototype);
 
 
 //Calls the transferAssetCount function.
@@ -219,17 +223,89 @@ SetAssetCondition.prototype.countAssets = function () {
 	this.restoreDivs(changedElements);
 }
 
-SetAssetCondition.prototype.setupSetCondition = function () {
+SetAssetCondition.prototype.startSettingCondition = function () {
 	this.assetList = this.assets.val().replace(/^\s*[\r\n]/gm, "");
 	this.assetList = this.assetList.split(/\n/);
 	if(this.assetList[this.assetList.length - 1] == "") {
 		this.assetList.pop();
 	}
-	this.loadAsset(this.assetList[0]);
+	this.asset.load(this.assetList[0]);
 //	var transferList = list;  If I transfer last, I wont need to keep the list.  
 }
 
+SetAssetCondition.prototype.continueSettingCondition = function () {
+	hideLoading();
+	this.assetList.remove(0);
+	if (this.assetList.length > 0) {
+		this.asset.load(this.assetList[0]);
+	}
+	//Else run transfer?
+}
 
+
+
+////////////////////////////////////
+//HTML for HD testing page.
+document.getElementById("dashboardBody").innerHTML = 'Print Tag:<input type="checkbox" id="PrintOption" checked="true"> </br> \
+	Form Factor: <select id="hdFormFactor"> \
+			<option value="Nothing">None</option> \
+			<option value="LPTP">Laptop Drive</option> \
+			<option value="3.5 IN">Desktop Drive</option> \
+		</select> \
+	</div> \
+<div class="divCell asset1"> \
+	Current Asset: <input id="asset1ID" value="" placeholder="Current Asset"> </br> \
+	<div id="asset1Results"> </div> \
+	Current Product: <span id="asset1Product">None </span> </br>\
+	PO Notes: <span id="asset1PONotes">PO Notes</span>  </br> \
+	<div id="asset1EditDiv"></div> \
+	<div id="asset1PO" style="visibility:hidden; width:1px; height:1px;"> </div>\
+</div> \
+<div class="sac"> \
+	<div>Transfer Location: <input id="sacLocation" placeholder="Location"> </br> \
+	<textarea rows="20" cols="30" id="sacAssets"></textarea>	\
+	<button id="sacButton">Set condition</button> \
+	<span id="sacCount"></span> \
+	<div id="sacResults"></div> \
+	<input type="hidden" id="sacID" value=""> \
+	<div id="sacEditDiv" style="visibility:hidden; width:1px; height:1px;"> </div> \
+</div>';
+//test = new TestInterface('asset1');
+sac = new SetAssetCondition('sac');
+)
+
+thing = 
+(
+
+
+ajaxCallback = function (func) {
+	alert("Callback setup");
+	var wrapper = function() {
+		$('#loadingWrapper').off('hasFinished')
+		alert("Callback");
+		func.call(this);
+		
+	};
+	$('#loadingWrapper').on('hasFinished',$.proxy(wrapper,this));
+//	$('#loadingWrapper').one('hasFinished',$.proxy(wrapper,this));
+}
+
+
+function selectAsset(id){
+     alert("Select Asset has been called" + id);  
+  var string = "ID="+id
+    var file = 'selectasset.php';
+    var code = 'document.getElementById("editAssetForm").innerHTML = response;alert("SA Callback");';
+
+    ajax(string, file, code, 'assets');
+}
+
+
+
+
+
+//////////////////////
+//Ignore belowe here
 
 SetAssetCondition.prototype.loadAsset = function (asset) {
 	alert('1');
@@ -281,37 +357,8 @@ SetAssetCondition.prototype.nextOnList = function () {
 	alert('10');
 }
 
-////////////////////////////////////
-//HTML for HD testing page.
-document.getElementById("dashboardBody").innerHTML = 'Print Tag:<input type="checkbox" id="PrintOption" checked="true"> </br> \
-	Form Factor: <select id="hdFormFactor"> \
-			<option value="Nothing">None</option> \
-			<option value="LPTP">Laptop Drive</option> \
-			<option value="3.5 IN">Desktop Drive</option> \
-		</select> \
-	</div> \
-<div class="divCell asset1"> \
-	Current Asset: <input id="asset1ID" value="" placeholder="Current Asset"> </br> \
-	<div id="asset1Results"> </div> \
-	Current Product: <span id="asset1Product">None </span> </br>\
-	PO Notes: <span id="asset1PONotes">PO Notes</span>  </br> \
-	<div id="asset1EditDiv"></div> \
-	<div id="asset1PO" style="visibility:hidden; width:1px; height:1px;"> </div>\
-</div> \
-<div class="sac"> \
-	<div>Transfer Location: <input id="sacLocation" placeholder="Location"> </br> \
-	<textarea rows="20" cols="30" id="sacAssets"></textarea>	\
-	<button id="sacButton">Set condition</button> \
-	<span id="sacCount"></span> \
-	<div id="sacResults"></div> \
-	<div id="sacTemp" style="visibility:hidden; width:1px; height:1px;"> </div> \
-</div>';
-test = new TestInterface('asset1','asset2');
-sac = new SetAssetCondition('sac');
-)
 
-thing = 
-(
+
 	<button id="asset1PS">Pass and Save</button> \
 	<button id="asset1FS">Fail and Save</button> \
 <div class="divCell asset2"> \
@@ -324,4 +371,8 @@ thing =
 	<button id="asset2FS">Fail and Save</button> \
 	<div id="asset2PO" style="visibility:hidden; width:1px; height:1px;"> </div>\
 </div>'
+
+
 )
+
+
