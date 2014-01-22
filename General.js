@@ -3,13 +3,19 @@ GeneralJS =
 //This stuff improves general IMS functionality	
 
 //This allows me to call something after an AJAX call without overloading another function.
-var ajaxCallback = function (func) {
+var ajaxCallback = function (func, ct) {
+	var counter = 0;
+	var countTo = ct || 0;
 	var wrapper = function() {
-//		$('#loadingWrapper').off('hasFinished')
-		func.call(this);
+		if(counter == countTo) {
+			$('#loadingWrapper').off('hasFinished');
+			func.call(this);
+		} else {
+			counter++;
+		}
 	};
-//	$('#loadingWrapper').on('hasFinished',$.proxy(wrapper,this));
-	$('#loadingWrapper').one('hasFinished',$.proxy(wrapper,this)); 
+	$('#loadingWrapper').on('hasFinished',$.proxy(wrapper,this));
+//	$('#loadingWrapper').one('hasFinished',$.proxy(wrapper,this));
 }
 
 
@@ -23,7 +29,7 @@ var hideLoadingOld = hideLoading;
 hideLoading = function (){
 	if(window.skipHide)
 	{	
-		window.skipHide = false;
+		window.skipHide = false;	
 		$('#loadingWrapper').trigger('hasFinished');
 		return;
 	}
