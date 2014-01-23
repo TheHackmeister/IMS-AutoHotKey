@@ -22,6 +22,7 @@ setupHDTest()
 {
 	global TestingHDJS
 	AMIIMS()
+	RunJavaScriptLong(AssetsJS)
 	RunJavaScriptLong(TestingHDJS)
 }
 

@@ -1,24 +1,24 @@
 TestingHDJS = 
 (
 ////////////////////////////////////////////////
-var Asset = function (id) {
+var AssetController = function (id) {
 	this.id = id;
 	this.asset = $('#' + id + 'ID');
 	this.editAssetDiv = $('#' + id + 'EditDiv');
 	this.productDiv = $('#' + id + 'Product');
 }
-Asset.prototype = Object.create(InputForm.prototype);
+AssetController.prototype = Object.create(InputForm.prototype);
 
-Asset.prototype.setAssetID = function (id) {
+AssetController.prototype.setAssetID = function (id) {
 	this.asset.val(id);
 //	this.asset.trigger('changed');
 }
 
-Asset.prototype.getAssetID = function() {
+AssetController.prototype.getAssetID = function() {
 	return this.asset.val();
 }
 
-Asset.prototype.load = function (id) {
+AssetController.prototype.load = function (id) {
 	if(typeof(id) == 'undefined') {
 		var id = this.getAssetID(id); 
 	} else {
@@ -32,7 +32,7 @@ Asset.prototype.load = function (id) {
 	selectAsset(id);
 }
 
-Asset.prototype.loadCallback = function (changedElements) {
+AssetController.prototype.loadCallback = function (changedElements) {
 	this.restoreDivs(changedElements);
 	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val());
 //Look for deleted asset here.
@@ -40,7 +40,7 @@ Asset.prototype.loadCallback = function (changedElements) {
 }
 
 //0 = pass, 1 = fail for condition. 
-Asset.prototype.setCondition = function (condition) {
+AssetController.prototype.setCondition = function (condition) {
 	if(typeof(condition) != 'undefined') {
 		$('.' + this.id + ' [name="test2"]').eq(condition).prop('checked', true);
 		$('.' + this.id + ' [name="test15"]').eq(condition).prop('checked', true);
@@ -48,28 +48,72 @@ Asset.prototype.setCondition = function (condition) {
 	this.asset.trigger('conditionSet');
 }
 
-Asset.prototype.save = function (condition) {
+AssetController.prototype.getAsset = function(currentID) {
+//Checks ID
+	if(this.checkLoaded(currentID)) {
+		this.editAssetDiv.html("");
+		return ["The item with the ID of " + currentID + " doesn't exist or has been deleted.", currentID];
+	}
+	
+//Checks that the item is not shipped.
+	if($('.'+ this.id + ' #detailWrapper div').hasClass("scrapped")) {
+		return ["The item " + currentID + " has been shipped or scrapped.", currentID];
+	}
+
+//Set the product type.	
+	var type;
+	if($("." + this.id + " [name='spec10']").length != 0) { //If the field exists, it's a hard drive.
+		type = "hard drive";
+	} else if ($("." + this.id + " [name='searchOrderlineSpecText6']").length != 0) { //If field exists, it's a laptop.
+		type = "laptop";
+	} else {
+		type = "other";
+	}
+
+	
+	if(this.checkType.val() == "hard drive" || this.checkType.val() == "laptop") {
+		var currentAsset = new Product(currentID,type);	
+	} else if(checkType == "simple") {
+		currentAsset = new Asset(currentID,type);
+	} else if (type == "hard drive") {
+		currentAsset = new Product(currentID,type);
+	} else if (type == "laptop") {
+		currentAsset = new Laptop(currentID,type);
+	}
+	
+	this.editAssetDiv.html("");
+	
+	return currentAsset;
+}
+
+AssetController.prototype.save = function (condition) {
 	ajaxCallback.call(this,function(){this.saveCallback()},3);
 	console.log("Saving asset: " + this.getAssetID());
 	saveAsset(this.getAssetID());
 }
 
-Asset.prototype.saveCallback = function () {
+AssetController.prototype.saveCallback = function () {
 	this.asset.trigger('saved');
 }
 
-Asset.prototype.printTag = function () {
+AssetController.prototype.printTag = function () {
 	newWindow("id=" + this.getAssetID(), 'printassettag.php', 'assets', true);
 }
 
-
+AssetController.prototype.checkLoaded = function (currentID) {
+	var assetID = $("." + this.id + " #editAssetID").val();
+	if(typeof(assetID) == 'undefined' || assetID != currentID) {
+		return false;
+	} 
+	return assetID;
+}
 
 
 //////////////////////////////////////
 
 CheckHd = function (id) {
 	this.id = id;
-	this.asset = new Asset(id);
+	this.asset = new AssetController(id);
 	this.poDiv = $('#' + id + 'PO');
 	this.poNotes = $('#' + id + 'PONotes');
 
@@ -148,8 +192,11 @@ var SetAssetCondition = function (id) {
 	this.count = $("#" + id + 'Count');
 	this.submit = $("#" + id + 'Button');
 	this.condition = $('#' + id + 'Condition');
+	this.checkType = $('#' + id + 'CheckType');
 	this.location = new Loc(id);
-	this.asset = new Asset(id);
+	this.asset = new AssetController(id);
+	this.beep = beepAlert;
+	
 		
 	
 //Event Handlers
@@ -157,10 +204,14 @@ var SetAssetCondition = function (id) {
 	this.asset.asset.on('loaded', $.proxy(function () {this.asset.setCondition(this.getCondition());},this));
 	this.asset.asset.on('conditionSet', $.proxy(function() {this.save();},this.asset));
 	this.asset.asset.on('saved', $.proxy(function() {this.continueSettingCondition();}, this));
-	
-	
+		
 	this.location.assets.on('keyup', $.proxy(function(event){
-		this.countAssets();
+	   if (event.keyCode == 13 || event.keyCode == 10) {
+			this.countAssets();
+			this.preCheck();
+		} else {
+			this.countAssets();
+		}
 	},this));
 }
 SetAssetCondition.prototype = Object.create(InputForm.prototype);
@@ -201,10 +252,76 @@ SetAssetCondition.prototype.continueSettingCondition = function () {
 }
 
 
+//Consider how to merge with load.
+SetAssetCondition.prototype.preCheck = function(id) {
+	alert(this.type);
+	if(this.checkType.val() == "off") return;
+	var currentID = id;
+	
+	var changedElements = this.changeDivs(this.editAssetDiv, "editAssetForm"); 	
+	ajaxCallback.call(this,function(){this.preCheckCallback(currentID)});
+	selectAsset(currentID);
+}
+
+
+//Start here. Should 
+SetAssetCondition.prototype.preCheckCallback = function(id) {
+	this.restoreDivs(changedElements);
+	if(this.checkType.val() == "off") return;
+	var asset = this.asset.getAsset(id);
+
+//Should run compare here. Look at this. checkAsset
+}
+
+SetAssetCondition.prototype.checkSetup = function () {
+	var list = this.asset.asset.val().replace(/^\s*[\r\n]/gm, "");
+	list = list.split(/\n/);
+	if(list[list.length - 1] == "") {list.pop();}
+	var currentID = list[list.length - 1];
+	
+	this.asset.preCheck(currentID,this.checkAsset);
+}
+
+SetAssetCondition.prototype.checkAsset = function (id) {
+	var asset = this.asset.preCheckCallback(id);
+	if (typeof(asset.type) == 'undefined') {
+		this.badAssetAlert(asset[0],asset[1]);
+	}
+
+	var firstAsset = new Product("",this.checkType.val(),expectedCondition);
+	var result = asset.compare(firstAsset);
+	if(result == true) {
+		this.goodAssetAlert();
+	} else {
+		this.badAssetAlert(result, id);
+	}
+}
+
+//I'd like to pass in a beepAlert reference rather than call it directly.
+SetAssetCondition.prototype.goodAssetAlert = function () {
+	if(this.count.html() == "(40 assets)") 
+		this.beep.play(1000, "Good");
+	else
+		this.beep.play(150, "Good");
+}
+SetAssetCondition.prototype.badAssetAlert = function (message, id) {
+	this.beep.play(500, "Bad", $.proxy(function(){this.badAssetAlertCallback(message,id);},this));
+//	beepAlert.playBad($.proxy(function(){this.badAssetAlertCallback(mesage);},this));
+}
+
+SetAssetCondition.prototype.badAssetAlertCallback = function (message,id) {
+//	alert(message);
+	var response = confirm(message + "\nRemove asset?");
+	
+	if(response==true) {
+		this.asset.val(this.asset.val().replace(id + '\n',''));
+		this.countAssets();
+	}
+}
 
 ////////////////////////////////////
 //HTML for HD testing page.
-document.getElementById("dashboardBody").innerHTML = 'Current Asset: <input id="asset1ID" value="" placeholder="Current Asset"> </br> \
+$('#dashboardBody').html('Current Asset: <input id="asset1ID" value="" placeholder="Current Asset"> </br> \
 	Form Factor: <select id="asset1FormFactor"> \
 			<option value="LPTP">Laptop Drive</option> \
 			<option value="">None</option> \
@@ -224,14 +341,21 @@ document.getElementById("dashboardBody").innerHTML = 'Current Asset: <input id="
 	Condition: <select id="sacCondition"> \
 		<option value="0">Pass</option> \
 		<option value="1">Fail</option> \
-	</select> </br> \
+	</select> \
+	Check Type: <select id="sacCheckType"> \
+		<option value="hard drive">Hard Drive</option> \
+		<option value="laptop">Laptop</option> \
+		<option value="simple">Simple</option> \
+		<option value="none">None</option> \
+	</select> </br>\
 	<textarea rows="20" cols="30" id="sacAssets"></textarea>	\
 	<button id="sacButton">Set condition</button> \
 	<span id="sacCount"></span> \
 	<div id="sacResults"></div> \
 	<input type="hidden" id="sacID" value=""> \
 	<div id="sacEditDiv" style="visibility:hidden; width:1px; height:1px;"> </div> \
-</div>';
+</div>');
+var beepAlert = new SoundAlert();
 var check = new CheckHd('asset1');
 var sac = new SetAssetCondition('sac');
 )

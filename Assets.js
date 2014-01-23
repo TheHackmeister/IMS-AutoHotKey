@@ -24,7 +24,7 @@ Asset.prototype.compare = function (asset2) {
 }	
 
 //inherits the Asset object and adds what's needed for comparing simple products, such as hard drives.
-var Product = function (id,type,product,condition) {
+var Product = function (id,type,condition,product) {
 	this.product = product || $("#editOrderlineProductSearchText" + id).val();
 
 	this.condition = condition || $("[name='test2']").eq(0).val();	
@@ -44,7 +44,7 @@ Product.prototype = Object.create(Asset.prototype, {
 });
 
 //This has the same concept as the Product object. However, I have not implemented it yet.
-var Laptop = function (id,type,product,condition,attatchedAssets,webcam,cpuID) {
+var Laptop = function (id,type,condition,product,attatchedAssets,webcam,cpuID) {
 	Product.apply(this, arguments);
 	//Sets the CPU info.
 	Object.defineProperty(this,"cpuID", {value: cpuID || $('#spec6').val(), writable : true, enumerable : false, configurable : true});
