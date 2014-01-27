@@ -2,17 +2,18 @@ BoxingCurrentBoxJS =
 (
 //This form manages the asset transfer boxes. 
 var TransferAssetsForm = function(id, soundObject) {
-	InputForm.call(this,id);
-	this.beep = soundObject;
-	this.location = $("#" + id + 'Location');
+	TransferWithPreCheck.apply(this,arguments);
+
+//	this.beep = soundObject;
+//	this.location = $("#" + id + 'Location');
 	this.checkType = $("#" + id +  'SimpleCheck');
-	this.assets  = $("#" + id + 'Assets');		
-	this.results = $("#" + id + 'Results');
-	this.count = $("#" + id + 'AssetsCount');
-	this.submit = $("#" + id + 'Submit');
+//	this.assets  = $("#" + id + 'Assets');		
+//	this.results = $("#" + id + 'Results');
+//	this.count = $("#" + id + 'AssetsCount');
+//	this.submit = $("#" + id + 'Submit');
 	this.productDiv = $("#" + id + 'ProductName');
-	this.assetTempLocation = $("#" + id + 'Temp');
-//Create a div to display first product.
+//	this.assetTempLocation = $("#" + id + 'Temp');
+//	Create a div to display first product.
 	this.firstAsset;
 	this.currentAsset;
 
@@ -27,8 +28,19 @@ var TransferAssetsForm = function(id, soundObject) {
 	},this));
 	this.submit.on('click',$.proxy(function() {this.transfer();},this));
 }
-TransferAssetsForm.prototype = Object.create(InputForm.prototype)
+TransferAssetsForm.prototype = Object.create(TransferWithPreCheck.prototype);
 
+
+TransferAssetsForm.prototype.setupComparison = function (asset, id) {
+	if (id == this.firstID) {
+		this.firstAsset = asset;
+		this.productDiv.html(this.firstAsset.product || "");
+	}
+	return this.firstAsset;
+}
+
+
+/*
 //Sets up the needed elements and calls transferAssets.
 TransferAssetsForm.prototype.transfer = function() {
 	var changedElements = this.changeDivs(this.location, "editAssetTransferLocation", this.assets, "editAssetTransferAssets", this.results, "editAssetTransferResults"); 
@@ -135,5 +147,5 @@ TransferAssetsForm.prototype.badAssetAlertCallback = function (message) {
 		this.assets.val(this.assets.val().replace(this.currentAsset.assetID + '\n',''));
 		this.countAssets();
 	}
-}
+}*/
 )

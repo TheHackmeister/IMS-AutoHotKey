@@ -30,7 +30,7 @@ Loc.prototype.getFirstAndLastAsset = function () {
 
 
 /////////////////////////////////////////////////////
-var TransferWithPreCheck = function (id) {
+var TransferWithPreCheck = function (id, soundObject) {
 	this.id = id;
 	this.count = $("#" + id + 'Count');
 	this.submit = $("#" + id + 'Button');
@@ -42,7 +42,7 @@ var TransferWithPreCheck = function (id) {
 		//assets
 		//results
 	this.asset = new AssetController(id);
-	this.beep = beepAlert;
+	this.beep = soundObject || beepAlert;
 	
 		
 	
@@ -89,6 +89,7 @@ TransferWithPreCheck.prototype.preCheckCallback = function(changedElements,id) {
 	this.restoreDivs(changedElements);
 
 	var asset = this.asset.getAsset(id);
+	
 	//If it didn't work.
 	if (typeof(asset.assetType) == 'undefined') {
 		this.badAssetAlert(asset[0],asset[1]);

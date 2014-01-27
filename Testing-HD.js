@@ -17,10 +17,11 @@ CheckHd = function (id) {
 
 	this.asset.asset.on('change', $.proxy(function() {this.load();},this.asset));
 	this.asset.asset.on('loaded', $.proxy(function () {
+		this.asset.asset.focus().select();
 		this.printTag();
 		this.loadPONotes();
 		this.checkHd();
-		this.asset.asset.focus().select();
+		this.asset.productDiv.html($('#editOrderlineProductSearchText' + this.asset.getAssetID()).val().replace("GENERIC HARD DRIVE ",""));
 	},this));
 }
 CheckHd.prototype = Object.create(InputForm.prototype);

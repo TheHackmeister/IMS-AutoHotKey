@@ -5,11 +5,13 @@ setupBoxing()
 	global BoxingCurrentLocJS
 	global BoxingCurrentBoxJS
 	global BoxingInitJS
+	global LocationsJS
 	AMIIMS()
 	BlockOn()
 
 	
 	RunJavaScriptLong(AssetsJS)
+	RunJavaScriptLong(LocationsJS)
 	RunJavaScriptLong(BoxingCreateLocJS)	
 	RunJavaScriptLong(BoxingCurrentLocJS)
 	RunJavaScriptLong(BoxingCurrentBoxJS)

@@ -35,7 +35,7 @@ AssetController.prototype.load = function (id) {
 
 AssetController.prototype.loadCallback = function (changedElements) {
 	this.restoreDivs(changedElements);
-	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val().replace("GENERIC HARD DRIVE ",""));
+//	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val().replace("GENERIC HARD DRIVE ",""));
 //Look for deleted asset here.
 	this.asset.trigger('loaded');
 }

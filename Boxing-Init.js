@@ -49,7 +49,7 @@ document.getElementById("dashboardBody").innerHTML = 'Create box<br/> \
 		</div> \
 	</div> \
 	<div> \
-		<div class="divCell" style="padding-right:75px;"> \
+		<div class="divCell currentBox" style="padding-right:75px;"> \
 			Transfer Assets to box<br> \
 			<select id="currentBoxSimpleCheck"> \
 				<option value="false">Hard Drive and Laptops </option> \
@@ -59,11 +59,11 @@ document.getElementById("dashboardBody").innerHTML = 'Create box<br/> \
 			Asset Tags<br> \
 			<div id="currentBoxProductName"></div> \
 			<textarea rows="20" cols="30" id="currentBoxAssets"></textarea><br> \
-			<input type="button" id="currentBoxSubmit" value="Transfer"><span id="currentBoxAssetsCount"></span><br> \
+			<input type="button" id="currentBoxButton" value="Transfer"><span id="currentBoxCount"></span><br> \
 			<div id="currentBoxResults"></div> \
-			<div id="currentBoxTemp" style="visibility:hidden; width:1px; height:1px;"></div> \
+			<div id="currentBoxEditDiv" style="visibility:hidden; width:1px; height:1px;"></div> \
 		</div> \
-		<div class="divCell"> \
+		<div class="divCell otherTransfer"> \
 			Transfer Assets to <input type="text" value="" id="otherTransferLocation"><br> \
 			<select id="otherTransferSimpleCheck"> \
 				<option value="off">No check</option> \
@@ -73,9 +73,9 @@ document.getElementById("dashboardBody").innerHTML = 'Create box<br/> \
 			Asset Tags<br> \
 			<div id="otherTransferProductName"></div> \
 			<textarea rows="20" cols="30" id="otherTransferAssets"></textarea><br> \
-			<input type="button" id="otherTransferSubmit" value="Transfer"><span id="otherTransferAssetsCount"></span><br> \
+			<input type="button" id="otherTransferButton" value="Transfer"><span id="otherTransferCount"></span><br> \
 			<div id="otherTransferResults"></div> \
-			<div id="otherTransferTemp" style="visibility:hidden; width:1px; height:1px;"></div> \
+			<div id="otherTransferEditDiv" style="visibility:hidden; width:1px; height:1px;"></div> \
 		</div> \
 	</div> ';
 

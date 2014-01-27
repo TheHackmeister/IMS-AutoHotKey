@@ -58,9 +58,9 @@ document.getElementById("dashboardBody").innerHTML = 'Create box<br/> \
 			Asset Tags<br> \
 			<div id="currentBoxProductName"></div> \
 			<textarea rows="20" cols="30" id="currentBoxAssets"></textarea><br> \
-			<input type="button" id="currentBoxSubmit" value="Transfer"><span id="currentBoxAssetsCount"></span><br> \
+			<input type="button" id="currentBoxSubmit" value="Transfer"><span id="currentBoxCount"></span><br> \
 			<div id="currentBoxResults"></div> \
-			<div id="currentBoxTemp" style="visibility:hidden; width:1px; height:1px;"></div> \
+			<div id="currentBoxEditDiv" style="visibility:hidden; width:1px; height:1px;"></div> \
 		</div> \
 		<div class="divCell"> \
 			Transfer Assets to <input type="text" value="" id="otherTransferLocation"><br> \
@@ -72,7 +72,7 @@ document.getElementById("dashboardBody").innerHTML = 'Create box<br/> \
 			Asset Tags<br> \
 			<div id="otherTransferProductName"></div> \
 			<textarea rows="20" cols="30" id="otherTransferAssets"></textarea><br> \
-			<input type="button" id="otherTransferSubmit" value="Transfer"><span id="otherTransferAssetsCount"></span><br> \
+			<input type="button" id="otherTransferSubmit" value="Transfer"><span id="otherTransferCount"></span><br> \
 			<div id="otherTransferResults"></div> \
 			<div id="otherTransferTemp" style="visibility:hidden; width:1px; height:1px;"></div> \
 		</div> \
