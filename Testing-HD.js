@@ -1,114 +1,5 @@
 TestingHDJS = 
 (
-////////////////////////////////////////////////
-var AssetController = function (id) {
-	this.id = id;
-	this.asset = $('#' + id + 'ID');
-	this.editAssetDiv = $('#' + id + 'EditDiv');
-	this.productDiv = $('#' + id + 'Product');
-}
-AssetController.prototype = Object.create(InputForm.prototype);
-
-AssetController.prototype.setAssetID = function (id) {
-	this.asset.val(id);
-//	this.asset.trigger('changed');
-}
-
-AssetController.prototype.getAssetID = function() {
-	return this.asset.val();
-}
-
-AssetController.prototype.load = function (id) {
-	if(typeof(id) == 'undefined') {
-		var id = this.getAssetID(id); 
-	} else {
-		this.setAssetID(id);
-	}
-	if(id == "") {
-		return;
-	}
-	var changedElements = this.changeDivs(this.editAssetDiv, "editAssetForm"); 
-	ajaxCallback.call(this,function(){this.loadCallback(changedElements);});
-	selectAsset(id);
-}
-
-AssetController.prototype.loadCallback = function (changedElements) {
-	this.restoreDivs(changedElements);
-	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val().replace("GENERIC HARD DRIVE ",""));
-//Look for deleted asset here.
-	this.asset.trigger('loaded');
-}
-
-//0 = pass, 1 = fail for condition. 
-AssetController.prototype.setCondition = function (condition) {
-	if(typeof(condition) != 'undefined') {
-		$('.' + this.id + ' [name="test2"]').eq(condition).prop('checked', true);
-		$('.' + this.id + ' [name="test15"]').eq(condition).prop('checked', true);
-	}
-	this.asset.trigger('conditionSet');
-}
-
-AssetController.prototype.getAsset = function(currentID, assetType) {
-//Checks ID
-	assetType = assetType || "";
-	if(!this.checkLoaded(currentID)) {
-		this.editAssetDiv.html("");
-		return ["The item with the ID of " + currentID + " doesn't exist or has been deleted.", currentID];
-	}
-	
-//Checks that the item is not shipped.
-	if($('.'+ this.id + ' #detailWrapper div').hasClass("scrapped")) {
-		return ["The item " + currentID + " has been shipped or scrapped.", currentID];
-	}
-
-//Set the product type.	
-	var type;
-	if($("." + this.id + " [name='spec10']").length != 0) { //If the field exists, it's a hard drive.
-		type = "hard drive";
-	} else if ($("." + this.id + " [name='searchOrderlineSpecText6']").length != 0) { //If field exists, it's a laptop.
-		type = "laptop";
-	} else {
-		type = "other";
-	}
-
-	
-	if(assetType == "hard drive" || assetType == "laptop") {
-		var currentAsset = new Product(currentID,type);	
-	} else if(assetType == "simple") {
-		currentAsset = new Asset(currentID,type);
-	} else if (type == "hard drive") {
-		currentAsset = new Product(currentID,type);
-	} else if (type == "laptop") {
-		currentAsset = new Laptop(currentID,type);
-	}
-	
-	this.editAssetDiv.html("");
-	
-	return currentAsset;
-}
-
-AssetController.prototype.save = function (condition) {
-	ajaxCallback.call(this,function(){this.saveCallback()},3);
-	console.log("Saving asset: " + this.getAssetID());
-	saveAsset(this.getAssetID());
-}
-
-AssetController.prototype.saveCallback = function () {
-	this.asset.trigger('saved');
-}
-
-AssetController.prototype.printTag = function () {
-	newWindow("id=" + this.getAssetID(), 'printassettag.php', 'assets', true);
-}
-
-AssetController.prototype.checkLoaded = function (currentID) {
-	var assetID = $("." + this.id + " #editAssetID").val();
-	if(typeof(assetID) == 'undefined' || assetID != currentID) {
-		return false;
-	} 
-	return assetID;
-}
-
 
 //////////////////////////////////////
 
@@ -170,50 +61,18 @@ CheckHd.prototype.checkHd = function () {
 	}
 }
 
-
-
-
-////////////////////////////////////////////////
-var Loc = function (id) {
-	this.id = id;
-	this.location = $('#' + id + 'Location');
-	this.results = $('#' + id + 'Results');
-	this.assets  = $("#" + id + 'Assets');	
-}
-Loc.prototype = Object.create(InputForm.prototype);
-
-
-Loc.prototype.transfer = function() {
-	var changedElements = this.changeDivs(this.location, "editAssetTransferLocation", this.assets, "editAssetTransferAssets", this.results, "editAssetTransferResults"); 
-	ajaxCallback.call(this,function(){this.transferCallback(changedElements)});
-	transferAssets();
-}
-
-Loc.prototype.transferCallback = function(changedElements) {
-	this.restoreDivs(changedElements);
-	this.assets.trigger('transfered');
-}
-
-Loc.prototype.getLastAsset = function () {
-	var list = this.assets.val().replace(/^\s*[\r\n]/gm, "").split(/\n/);
-	if(list[list.length - 1] == "") {list.pop();}
-	
-	return list[list.length - 1];
-}
-
-
-
 /////////////////////////////////////////////////////
 var SetAssetCondition = function (id) {
 	this.id = id;
-	this.count = $("#" + id + 'Count');
-	this.submit = $("#" + id + 'Button');
 	this.condition = $('#' + id + 'Condition');
-	this.checkType = $('#' + id + 'CheckType');
-	this.location = new Loc(id);
-	this.asset = new AssetController(id);
-	this.beep = beepAlert;
-	
+	TransferWithPreCheck.apply(this, arguments);
+//	this.count = $("#" + id + 'Count');
+//	this.submit = $("#" + id + 'Button');
+//	this.checkType = $('#' + id + 'CheckType');
+//	this.location = new Loc(id);
+//	this.asset = new AssetController(id);
+//	this.beep = beepAlert;
+
 		
 	
 //Event Handlers
@@ -222,7 +81,7 @@ var SetAssetCondition = function (id) {
 	this.asset.asset.on('conditionSet', $.proxy(function() {this.save();},this.asset));
 	this.asset.asset.on('saved', $.proxy(function() {this.continueSettingCondition();}, this));
 		
-	this.location.assets.on('keyup', $.proxy(function(event){
+	this.assets.on('keyup', $.proxy(function(event){
 	   if (event.keyCode == 13 || event.keyCode == 10) {
 			this.countAssets();
 			this.preCheck();
@@ -231,22 +90,16 @@ var SetAssetCondition = function (id) {
 		}
 	},this));
 }
-SetAssetCondition.prototype = Object.create(InputForm.prototype);
+SetAssetCondition.prototype = Object.create(TransferWithPreCheck.prototype);
 
 
-//Calls the transferAssetCount function.
-SetAssetCondition.prototype.countAssets = function () {
-	var changedElements = this.changeDivs(this.location.assets, "editAssetTransferAssets", this.count, "count"); 
-	transferAssetsCount();
-	this.restoreDivs(changedElements);
-}
 
 SetAssetCondition.prototype.startSettingCondition = function () {
-	if(this.location.location.val() == "") {
+	if(this.location.val() == "") {
 		alert("Please enter a transfer to location");
 		return;
 	}
-	this.assetList = this.location.assets.val().replace(/^\s*[\r\n]/gm, "");
+	this.assetList = this.assets.val().replace(/^\s*[\r\n]/gm, "");
 	this.assetList = this.assetList.split(/\n/);
 	if(this.assetList[this.assetList.length - 1] == "") {
 		this.assetList.pop();
@@ -259,6 +112,12 @@ SetAssetCondition.prototype.getCondition = function () {
 	return this.condition.val();
 }
 
+SetAssetCondition.prototype.setupComparison = function (asset, id) {
+	var comp = new Product("",this.checkType.val(),this.condition.val(), "");
+	comp.product = asset.product;
+	return comp;
+}
+
 SetAssetCondition.prototype.continueSettingCondition = function () {
 	//hideLoading(); Not needed?
 	console.log("On asset " + (this.listLength - this.assetList.length + 1) + " of " + this.listLength + ".");
@@ -268,75 +127,10 @@ SetAssetCondition.prototype.continueSettingCondition = function () {
 		this.asset.load(this.assetList[0]);
 	} else {
 		console.log("Starting transfer.");
-		this.location.transfer();
+		this.transfer();
 	}
 }
 
-//Consider how to merge with load.
-SetAssetCondition.prototype.preCheck = function(id) {	
-	if(this.checkType.val() == "off") return;
-	$('#asset1EditDiv').html("")
-	id = id || this.location.getLastAsset();
-	var changedElements = this.changeDivs(this.asset.editAssetDiv, "editAssetForm"); 	
-	ajaxCallback.call(this,function(){this.preCheckCallback(changedElements,id)});
-	selectAsset(id);
-}
-
-
-//Start here. Should 
-SetAssetCondition.prototype.preCheckCallback = function(changedElements,id) {
-	this.restoreDivs(changedElements);
-
-
-
-	var asset = this.asset.getAsset(id);
-
-	//If it didn't work.
-	if (typeof(asset.assetType) == 'undefined') {
-		this.badAssetAlert(asset[0],asset[1]);
-		return;
-	}
-	var firstAsset = new Product("",this.checkType.val(),this.condition.val(), "");
-
-	firstAsset.product = asset.product;
-	var result = asset.compare(firstAsset);
-	if(result == true) {
-		this.goodAssetAlert();
-	} else {
-		this.badAssetAlert(result, id);
-	}
-}
-/*
-SetAssetCondition.prototype.checkSetup = function () {
-	var list = this.asset.asset.val().replace(/^\s*[\r\n]/gm, "");
-	list = list.split(/\n/);
-	if(list[list.length - 1] == "") {list.pop();}
-	var currentID = list[list.length - 1];
-	
-	this.asset.preCheck(currentID,this.checkAsset);
-}
-*/
-//I'd like to pass in a beepAlert reference rather than call it directly.
-SetAssetCondition.prototype.goodAssetAlert = function () {
-	if(this.count.html() == "(40 assets)") 
-		this.beep.play(1000, "Good");
-	else
-		this.beep.play(150, "Good");
-}
-SetAssetCondition.prototype.badAssetAlert = function (message, id) {
-	this.beep.play(500, "Bad", $.proxy(function(){this.badAssetAlertCallback(message,id);},this));
-//	beepAlert.playBad($.proxy(function(){this.badAssetAlertCallback(mesage);},this));
-}
-
-SetAssetCondition.prototype.badAssetAlertCallback = function (message,id) {
-//	alert(message);
-	var response = confirm(message + "\nRemove asset?");
-	
-	if(response==true) {
-		this.location.assets.val(this.location.assets.val().replace(id + '\n',''));
-		this.countAssets();
-	}
-}
 
 ////////////////////////////////////
 //HTML for HD testing page.

@@ -1,5 +1,118 @@
 AssetsJS = 
-(	
+(
+
+////////////////////////////////////////////////
+var AssetController = function (id) {
+	this.id = id;
+	this.asset = $('#' + id + 'ID');
+	this.editAssetDiv = $('#' + id + 'EditDiv');
+	this.productDiv = $('#' + id + 'Product');
+}
+AssetController.prototype = Object.create(InputForm.prototype);
+
+AssetController.prototype.setAssetID = function (id) {
+	this.asset.val(id);
+//	this.asset.trigger('changed');
+}
+
+AssetController.prototype.getAssetID = function() {
+	return this.asset.val();
+}
+
+AssetController.prototype.load = function (id) {
+	if(typeof(id) == 'undefined') {
+		var id = this.getAssetID(id); 
+	} else {
+		this.setAssetID(id);
+	}
+	if(id == "") {
+		return;
+	}
+	var changedElements = this.changeDivs(this.editAssetDiv, "editAssetForm"); 
+	ajaxCallback.call(this,function(){this.loadCallback(changedElements);});
+	selectAsset(id);
+}
+
+AssetController.prototype.loadCallback = function (changedElements) {
+	this.restoreDivs(changedElements);
+	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val().replace("GENERIC HARD DRIVE ",""));
+//Look for deleted asset here.
+	this.asset.trigger('loaded');
+}
+
+//0 = pass, 1 = fail for condition. 
+AssetController.prototype.setCondition = function (condition) {
+	if(typeof(condition) != 'undefined') {
+		$('.' + this.id + ' [name="test2"]').eq(condition).prop('checked', true);
+		$('.' + this.id + ' [name="test15"]').eq(condition).prop('checked', true);
+	}
+	this.asset.trigger('conditionSet');
+}
+
+AssetController.prototype.getAsset = function(currentID, assetType) {
+//Checks ID
+	assetType = assetType || "";
+	if(!this.checkLoaded(currentID)) {
+		this.editAssetDiv.html("");
+		return ["The item with the ID of " + currentID + " doesn't exist or has been deleted.", currentID];
+	}
+	
+//Checks that the item is not shipped.
+	if($('.'+ this.id + ' #detailWrapper div').hasClass("scrapped")) {
+		return ["The item " + currentID + " has been shipped or scrapped.", currentID];
+	}
+
+//Set the product type.	
+	var type;
+	if($("." + this.id + " [name='spec10']").length != 0) { //If the field exists, it's a hard drive.
+		type = "hard drive";
+	} else if ($("." + this.id + " [name='searchOrderlineSpecText6']").length != 0) { //If field exists, it's a laptop.
+		type = "laptop";
+	} else {
+		type = "other";
+	}
+
+	
+	if(assetType == "hard drive" || assetType == "laptop") {
+		var currentAsset = new Product(currentID,type);	
+	} else if(assetType == "simple") {
+		currentAsset = new Asset(currentID,type);
+	} else if (type == "hard drive") {
+		currentAsset = new Product(currentID,type);
+	} else if (type == "laptop") {
+		currentAsset = new Laptop(currentID,type);
+	}
+	
+	this.editAssetDiv.html("");
+	
+	return currentAsset;
+}
+
+AssetController.prototype.save = function (condition) {
+	ajaxCallback.call(this,function(){this.saveCallback()},3);
+	console.log("Saving asset: " + this.getAssetID());
+	saveAsset(this.getAssetID());
+}
+
+AssetController.prototype.saveCallback = function () {
+	this.asset.trigger('saved');
+}
+
+AssetController.prototype.printTag = function () {
+	newWindow("id=" + this.getAssetID(), 'printassettag.php', 'assets', true);
+}
+
+AssetController.prototype.checkLoaded = function (currentID) {
+	var assetID = $("." + this.id + " #editAssetID").val();
+	if(typeof(assetID) == 'undefined' || assetID != currentID) {
+		return false;
+	} 
+	return assetID;
+}
+
+
+////////////////////////////
+	
 //Creates an asset object. Will be inherited by other objects.
 var Asset = function(id,type) {
 	Object.defineProperty(this,"assetID", {value: id, writable : true, enumerable : false, configurable : true});

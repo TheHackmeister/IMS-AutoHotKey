@@ -10,6 +10,7 @@ SetKeyDelay, 3
 #Include Boxing-Init.js
 #Include Testing-HD.js
 #Include Count-In-Location.js
+#Include Locations.js
 
 #Include Functions.ahk
 #Include HandlersGeneral.ahk
