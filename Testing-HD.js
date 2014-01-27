@@ -34,7 +34,7 @@ AssetController.prototype.load = function (id) {
 
 AssetController.prototype.loadCallback = function (changedElements) {
 	this.restoreDivs(changedElements);
-	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val());
+	this.productDiv.html($('#editOrderlineProductSearchText' + this.getAssetID()).val().replace("GENERIC HARD DRIVE ",""));
 //Look for deleted asset here.
 	this.asset.trigger('loaded');
 }
@@ -48,9 +48,10 @@ AssetController.prototype.setCondition = function (condition) {
 	this.asset.trigger('conditionSet');
 }
 
-AssetController.prototype.getAsset = function(currentID) {
+AssetController.prototype.getAsset = function(currentID, assetType) {
 //Checks ID
-	if(this.checkLoaded(currentID)) {
+	assetType = assetType || "";
+	if(!this.checkLoaded(currentID)) {
 		this.editAssetDiv.html("");
 		return ["The item with the ID of " + currentID + " doesn't exist or has been deleted.", currentID];
 	}
@@ -71,9 +72,9 @@ AssetController.prototype.getAsset = function(currentID) {
 	}
 
 	
-	if(this.checkType.val() == "hard drive" || this.checkType.val() == "laptop") {
+	if(assetType == "hard drive" || assetType == "laptop") {
 		var currentAsset = new Product(currentID,type);	
-	} else if(checkType == "simple") {
+	} else if(assetType == "simple") {
 		currentAsset = new Asset(currentID,type);
 	} else if (type == "hard drive") {
 		currentAsset = new Product(currentID,type);
@@ -116,6 +117,7 @@ CheckHd = function (id) {
 	this.asset = new AssetController(id);
 	this.poDiv = $('#' + id + 'PO');
 	this.poNotes = $('#' + id + 'PONotes');
+	this.scrapOption = $('#' + id + 'ScrapOption');
 
 	this.printOption = $('#' + id + 'PrintOption');
 	this.formFactor = $('#' + id + 'FormFactor');
@@ -155,8 +157,16 @@ CheckHd.prototype.checkHd = function () {
 		alert("The product is not of type " + this.formFactor.val());
 	}
 	
-	if($('.' + this.id + ' [name="test2"]').eq(1).prop('checked') == true) {
+	if($('.' + this.id + ' [name="test2"]').eq(1).prop('checked') == true && this.scrapOption.is(":checked") != true) {
 		alert("Asset condition is bad.");
+	}
+	
+	if($('.' + this.id + ' [name="test2"]').eq(0).prop('checked') == true && this.scrapOption.is(":checked") == true) {
+		alert("Asset condition is good");
+	}
+	
+	if(typeof($('.' + this.id + ' [name="test15"]').val()) == 'undefined') {
+		alert("Asset does not have quickwipe test.");
 	}
 }
 
@@ -182,6 +192,13 @@ Loc.prototype.transfer = function() {
 Loc.prototype.transferCallback = function(changedElements) {
 	this.restoreDivs(changedElements);
 	this.assets.trigger('transfered');
+}
+
+Loc.prototype.getLastAsset = function () {
+	var list = this.assets.val().replace(/^\s*[\r\n]/gm, "").split(/\n/);
+	if(list[list.length - 1] == "") {list.pop();}
+	
+	return list[list.length - 1];
 }
 
 
@@ -234,6 +251,7 @@ SetAssetCondition.prototype.startSettingCondition = function () {
 	if(this.assetList[this.assetList.length - 1] == "") {
 		this.assetList.pop();
 	}
+	this.listLength = this.assetList.length;
 	this.asset.load(this.assetList[0]);
 }
 
@@ -242,37 +260,53 @@ SetAssetCondition.prototype.getCondition = function () {
 }
 
 SetAssetCondition.prototype.continueSettingCondition = function () {
-	hideLoading();
+	//hideLoading(); Not needed?
+	console.log("On asset " + (this.listLength - this.assetList.length + 1) + " of " + this.listLength + ".");
+	
 	this.assetList.remove(0);
 	if (this.assetList.length > 0) {
 		this.asset.load(this.assetList[0]);
 	} else {
+		console.log("Starting transfer.");
 		this.location.transfer();
 	}
 }
 
-
 //Consider how to merge with load.
-SetAssetCondition.prototype.preCheck = function(id) {
-	alert(this.type);
+SetAssetCondition.prototype.preCheck = function(id) {	
 	if(this.checkType.val() == "off") return;
-	var currentID = id;
-	
-	var changedElements = this.changeDivs(this.editAssetDiv, "editAssetForm"); 	
-	ajaxCallback.call(this,function(){this.preCheckCallback(currentID)});
-	selectAsset(currentID);
+	$('#asset1EditDiv').html("")
+	id = id || this.location.getLastAsset();
+	var changedElements = this.changeDivs(this.asset.editAssetDiv, "editAssetForm"); 	
+	ajaxCallback.call(this,function(){this.preCheckCallback(changedElements,id)});
+	selectAsset(id);
 }
 
 
 //Start here. Should 
-SetAssetCondition.prototype.preCheckCallback = function(id) {
+SetAssetCondition.prototype.preCheckCallback = function(changedElements,id) {
 	this.restoreDivs(changedElements);
-	if(this.checkType.val() == "off") return;
+
+
+
 	var asset = this.asset.getAsset(id);
 
-//Should run compare here. Look at this. checkAsset
-}
+	//If it didn't work.
+	if (typeof(asset.assetType) == 'undefined') {
+		this.badAssetAlert(asset[0],asset[1]);
+		return;
+	}
+	var firstAsset = new Product("",this.checkType.val(),this.condition.val(), "");
 
+	firstAsset.product = asset.product;
+	var result = asset.compare(firstAsset);
+	if(result == true) {
+		this.goodAssetAlert();
+	} else {
+		this.badAssetAlert(result, id);
+	}
+}
+/*
 SetAssetCondition.prototype.checkSetup = function () {
 	var list = this.asset.asset.val().replace(/^\s*[\r\n]/gm, "");
 	list = list.split(/\n/);
@@ -281,22 +315,7 @@ SetAssetCondition.prototype.checkSetup = function () {
 	
 	this.asset.preCheck(currentID,this.checkAsset);
 }
-
-SetAssetCondition.prototype.checkAsset = function (id) {
-	var asset = this.asset.preCheckCallback(id);
-	if (typeof(asset.type) == 'undefined') {
-		this.badAssetAlert(asset[0],asset[1]);
-	}
-
-	var firstAsset = new Product("",this.checkType.val(),expectedCondition);
-	var result = asset.compare(firstAsset);
-	if(result == true) {
-		this.goodAssetAlert();
-	} else {
-		this.badAssetAlert(result, id);
-	}
-}
-
+*/
 //I'd like to pass in a beepAlert reference rather than call it directly.
 SetAssetCondition.prototype.goodAssetAlert = function () {
 	if(this.count.html() == "(40 assets)") 
@@ -314,22 +333,22 @@ SetAssetCondition.prototype.badAssetAlertCallback = function (message,id) {
 	var response = confirm(message + "\nRemove asset?");
 	
 	if(response==true) {
-		this.asset.val(this.asset.val().replace(id + '\n',''));
+		this.location.assets.val(this.location.assets.val().replace(id + '\n',''));
 		this.countAssets();
 	}
 }
 
 ////////////////////////////////////
 //HTML for HD testing page.
-$('#dashboardBody').html('Current Asset: <input id="asset1ID" value="" placeholder="Current Asset"> </br> \
+$('#dashboardBody').html('Current Asset: <input id="asset1ID" value="" placeholder="Current Asset"> <span id="asset1Product" style="font-size:2em;">None </span></br> \
 	Form Factor: <select id="asset1FormFactor"> \
 			<option value="LPTP">Laptop Drive</option> \
 			<option value="">None</option> \
 			<option value="3.5 IN">Desktop Drive</option> \
 		</select> </br> \
-	Print Tag:<input type="checkbox" id="asset1PrintOption" checked="true"> </br> \
+	Print Tag:<input type="checkbox" id="asset1PrintOption"> </br>\
+	Disable scrapping alert:<input type="checkbox" id="asset1ScrapOption"> </br> \
 <div class="divCell asset1"> \
-	Current Product: <span id="asset1Product">None </span> </br>\
 	PO Notes: <span id="asset1PONotes">PO Notes</span>  </br> \
 	<div id="asset1EditDiv"></div> \
 	<div id="asset1PO" style="visibility:hidden; width:1px; height:1px;"> </div>\
@@ -339,8 +358,8 @@ $('#dashboardBody').html('Current Asset: <input id="asset1ID" value="" placehold
 	<div>Set condition and transfer</div>\
 	<div>Transfer Location: <input id="sacLocation" placeholder="Location"> </br> \
 	Condition: <select id="sacCondition"> \
-		<option value="0">Pass</option> \
-		<option value="1">Fail</option> \
+		<option value="Pass">Pass</option> \
+		<option value="Fail">Fail</option> \
 	</select> \
 	Check Type: <select id="sacCheckType"> \
 		<option value="hard drive">Hard Drive</option> \

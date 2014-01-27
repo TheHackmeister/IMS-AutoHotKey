@@ -26,12 +26,13 @@ Asset.prototype.compare = function (asset2) {
 //inherits the Asset object and adds what's needed for comparing simple products, such as hard drives.
 var Product = function (id,type,condition,product) {
 	this.product = product || $("#editOrderlineProductSearchText" + id).val();
-
-	this.condition = condition || $("[name='test2']").eq(0).val();	
-
-	if(this.condition == 1) {
+	
+	//This checks the fail radio button.
+	this.condition = condition || $("[name='test2']").eq(1).prop('checked');	
+	
+	if(this.condition == false) {
 		this.condition = "Pass";
-	} else {
+	} else if (this.condition == true) {
 		this.condition = "Fail";
 	}
 

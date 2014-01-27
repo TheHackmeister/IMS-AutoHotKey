@@ -21,6 +21,7 @@ BlockOff()
 setupHDTest()
 {
 	global TestingHDJS
+	global AssetsJS
 	AMIIMS()
 	RunJavaScriptLong(AssetsJS)
 	RunJavaScriptLong(TestingHDJS)
