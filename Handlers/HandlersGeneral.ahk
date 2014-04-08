@@ -49,6 +49,31 @@ BlockOn()
 BlockOff()
 }
 
+EnterNote(PrintOption, FailWipe = "")
+{
+BlockOn()
+	AmIIMS()
+	global LastItemScanned
+	global LastItemTypeScanned
+	
+	LastItemScanned = %PrintOption%
+	LastItemTypeScanned = Note
+	
+	IF(FailWipe == true) 
+	{
+		FailWipe = Fail
+	} else {
+		FailWipe = Pass
+	}
+	
+	InsertAdditionalText("spec15",PrintOption)
+	InsertRadio("test2","Fail")
+	InsertRadio("test8",FailWipe)
+	EnterSave()
+	
+BlockOff()
+}
+
 EnterCondition(Option1 = "", Option2 = "")
 {
 	AmIIMS()
@@ -107,8 +132,81 @@ BlockOn()
 
 	;;;Actions
 
+	If(Option1)
+	{
+		EnterCondition(Option1)
+	}
+	SaveAsset()
+	WaitForIMSLoad("True")
+;	PlaceMouse("addAssetProductSearchText")
+BlockOff()
+}
 
-	EnterCondition(Option1)
+EnterConditionAndSave(Condition, Restore)
+{
+	AmIIMS()
+	;	global CurrentInsertLockStatus
+
+	;;;Tracking
+
+;	If (Option1 == LastItemScanned AND Option2)
+;	{
+;		PrintOption = %Option2%
+;		
+;	} else if Option1 {
+;		PrintOption = %Option1%	
+;	} else {
+;	;;; Algorithm for guess goes here. 		
+;		;Need to check for Condition / lock missmatch.
+;		PrintOption = Lock
+;	}
+;	LastItemScanned = %PrintOption%
+;	LastItemTypeScanned = Save
+;	CurrentInsertLockStatus = %PrintOption%
+
+	;;;Actions
+
+
+	
+	InsertRadio("test2", Condition)
+	
+	InsertRadio("test8", Restore)
+	SaveAsset()
+	WaitForIMSLoad("True")
+	
+	BlockOff()
+}
+
+EnterSave2(Option1 = "", Option2 = "")
+{
+BlockOn()
+	AmIIMS()
+	PrintOption = ""
+	;	global CurrentInsertLockStatus
+
+	;;;Tracking
+
+;	If (Option1 == LastItemScanned AND Option2)
+;	{
+;		PrintOption = %Option2%
+;		
+;	} else if Option1 {
+;		PrintOption = %Option1%	
+;	} else {
+;	;;; Algorithm for guess goes here. 		
+;		;Need to check for Condition / lock missmatch.
+;		PrintOption = Lock
+;	}
+;	LastItemScanned = %PrintOption%
+;	LastItemTypeScanned = Save
+;	CurrentInsertLockStatus = %PrintOption%
+
+	;;;Actions
+
+
+	EnterCondition("Pass")
+	
+	InsertRadio("test8", "Pass")
 	SaveAsset()
 	WaitForIMSLoad("True")
 ;	PlaceMouse("addAssetProductSearchText")
@@ -126,6 +224,24 @@ EnterCompleteProduct(ExternalID,SN,Product="")
 	WaitForIMSLoad()
 	EnterSave("Pass")
 }
+
+EnterCompleteProductAndConditions(ExternalID,SN, Cond, Restore,Product="",Notes = "")
+{
+	AmIIMS()
+	If(Product)
+		EnterProduct(Product)
+	InsertTextByID("addOrderlineSN", SN)
+	EnterOrderLine()	
+	InsertTextByID("editOrderlineExternalAsset", ExternalID)
+	WaitForIMSLoad()
+
+	StringReplace, Notes, Notes,`n,\n,All	
+
+	InsertAdditionalText("spec15",Notes)
+
+	EnterConditionAndSave(Cond, Restore)
+}
+
 
 EnterHDDLoop(Size = "", Product="")
 {

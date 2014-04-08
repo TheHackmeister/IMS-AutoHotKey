@@ -10,7 +10,7 @@ InsertProduct(Product)
 document.getElementById("addOrderlineSN").focus();	
 var temp = document.createElement('div');
 temp.innerHTML = "%Product%";
-addAssetSelectProduct('%PID%', temp);
+goods_receipt_addAssetSelectProduct('%PID%', temp);
 	)
 	
 	RunJavascript(JSText)	
@@ -25,22 +25,20 @@ InsertLocation(LocationInput = "")
 	
 	If(!Location)
 	{
-		BlockOff()
 		InputBox, LocationInput, Location number,Enter your location number,,210,120
 		Location := LocationInput
-		BlockOn()
 	}
 	
 	If(!Location)
 	{
 		Alert("You didn't enter any location. Exiting script.")
-		BlockOff()
 		exit
 	}
-
+;Broken. Should use goods_receipt_addLine, but I don't know how to get the needed order number.
 	JSText = 
 	(
 document.getElementById("addOrderlineLocation").value = "%Location%"; 
+goods_receipt_addLine('');
 addOrderLine();
 	)
 	BlockOff()
@@ -55,14 +53,16 @@ InsertCPU(CPU)
 	JSText = 
 	( 
 document.getElementById("spec5").focus();	
-selectOrderlineSpec('%CPUID%', 6, "", getEditAssetID());
+var e = document.createElement("div");
+e.innerHTML = '%CPU%';
+selectOrderlineSpec('%CPUID%', 6, e, getEditAssetID());
 	)
 	RunJavascript(JSText)
 }
 
 InsertRadio(ID, Setting)
 {
-	If(Setting == "Yes" OR Setting == "Pass")
+	If(Setting == "Yes" OR Settin		g == "Pass")
 	{
 		Setting = 0
 	} else if (Setting == "No" OR Setting == "Fail") {
@@ -77,11 +77,11 @@ InsertRadio(ID, Setting)
 	RunJavaScript(JSText)
 }
 
-InsertTextByID(ID,SN)
+InsertTextByID(ID,String)
 {
 	JSText = 
 	(
-		document.getElementById("%ID%").value = "%SN%";
+		document.getElementById("%ID%").value = "%String%";
 	)
 	RunJavaScript(JSText)
 }
@@ -95,7 +95,15 @@ InsertText(ID, String)
 	RunJavaScript(JSText)
 }
 
-;Test
+InsertAdditionalText(ID, String)
+{
+	JSText = 
+	(
+		document.getElementsByName("%ID%")[0].value = document.getElementsByName("%ID%")[0].value + "%String%\n";
+	)
+	RunJavaScript(JSText)
+}
+
 InsertDropdown(Name, Value)
 {
 	global DropDownList
@@ -124,40 +132,21 @@ SaveAsset()
 
 AmIIMS()
 {
-	global IMSBrowser
-	GroupAdd, NOIMSChrome, 63.253.103.78/ims/dashboard.php - Google Chrome
-	GroupAdd, NOIMSChrome, 63.253.103.78/ims/dashboard.php# - Google Chrome
-	GroupAdd, NOIMSChrome, 63.253.103.78/ims/login.php# - Google Chrome
-	GroupAdd, NOIMSChrome, 63.253.103.78/ims/login.php - Google Chrome
 	GroupAdd, IMSChrome, IMS - Google Chrome
-	GroupAdd, IMSFirefox, IMS - Mozilla Firefox
 	GroupAdd, IMS, ahk_group IMSChrome
-	GroupAdd, IMS, ahk_group IMSFirefox
-	GroupAdd, NOIMS, ahk_group NOIMSChrome
-	GroupAdd, NOIMSFirefox, Mozilla Firefox
-	GroupAdd, NOIMS, ahk_group NOIMSFirefox
-	GroupAdd, IMSLoading, IMS (Loading) - Mozilla Firefox
 	GroupAdd, IMSLoading, IMS (Loading) - Google Chrome
 
 	
 	If (WinActive("ahk_group IMS") OR WinActive("ahk_group IMSLoading"))
 	{
-;		SetIMSBrowser()
 		return True
-	} else If (WinActive("ahk_group NOIMS")) {
-		SetupIMSPage()
-;		SetIMSBrowser()
-		return
-		
 	} else {
 		IfWinExist, ahk_group IMS
 		{
 			WinActivate
 			WinWait ahk_group IMS
-;			SetIMSBrowser()
 			return
 		}		
-		BlockOff()
 		Alert("This script could not locate an IMS window. Please make sure that the IMS page is the active tab in your browser or that you are using Chrome.")
 		exit
 	}
@@ -171,15 +160,6 @@ WaitForIMSLoad(Expected="")
 	If(Expected)
 		WinWait, ahk_group IMSLoading
 	WinWaitActive, ahk_group IMS
-	
-	;	Sleep, 750
-;	PixelGetColor, PColor, 12, 250
-;	While (PColor == "0x7F7F7F")
-;	{
-;	PixelGetColor, PColor, 12, 250
-;	;Coounter += 1
-;	Sleep, 100
-;	}
 }
 
 BlockOn()
@@ -235,23 +215,12 @@ ProductIDLookup(Product) {
 
 PrintLabel()
 {
-	GroupAdd, Possible, 404 Not Found - Mozilla Firefox
-	GroupAdd, Possible, Mozilla Firefox
 	GroupAdd, Possible, Untitled - Google Chrome
 	GroupAdd, Possible, about:blank - Google Chrome
 	
 	WinWaitActive ahk_group Possible
-BlockOff()
 	WaitForPrint()
 	
-;	If (WinActive("Mozilla Firefox")) {
-;		WaitForPrint()
-;		WinWaitActive, Mozilla Firefox
-;	} else {
-;		WaitForPrint()
-;	}
-
-	;Send !{F4}
 	WinWaitActive, ahk_group IMS
 	
 }
@@ -259,9 +228,6 @@ BlockOff()
 ;Maybe roll into above.
 WaitForPrint()
 {
-
-	GroupAdd, IMSPrint, Print
-	GroupAdd, IMSPrint, ,Print
 	GroupAdd, IMSPrint, Print Ready - Google Chrome
 	WinWaitActive, ahk_group IMSPrint
 	While(WinActive("ahk_group IMSPrint"))
@@ -292,63 +258,6 @@ RunJavascript(RunText)
 	Send ^+y
 }
 
-RunJavascriptLong(RunText)
-{
-	Send ^y
-	Send ^a
-	Send {Backspace}
-	TempClip := clipboard
-	Sleep, 400
-	clipboard = %RunText%
-	Sleep, 400
-	Send ^v
-	Sleep, 50
-	Send ^+y
-	clipboard := TempClip
-	Sleep, 400
-}
-
-RunJavascriptSafe(JSText)
-{
-	SetTitleMatchMode, 2
-	TempClip := clipboard
-	Sleep, 300
-	clipboard = %JSText%
-	Sleep, 300
-	If(WinActive("Chrome"))
-	{
-		;If (!WinActive(,"Developer Tools - http://63.253.103.78/ims/dashboard.php"))
-		Send ^+j
-		BlockOff()
-		;WinWait,,Developer Tools - http://63.253.103.78/ims/dashboard.php
-		Sleep, 1000
-		BlockOn()
-		Send ^v
-		Send {Enter}
-		Send ^+j
-		;WinWaitNotActive,,Developer Tools - http://63.253.103.78/ims/dashboard.php
-		Sleep, 1000
-	} Else {
-		Send +{F4}
-		BlockOff()
-		WinWaitActive, Scratchpad
-		BlockOn()
-		Sleep, 1000
-		Send ^v
-		Send ^r
-		
-		WinWaitActive, *Scratchpad
-		Send !{F4}
-		WinWaitActive, Unsaved Changes
-		Send !n
-		WinWaitNotActive, Unsaved Changes
-		WinWaitActive, IMS - Mozilla Firefox
-		Sleep, 1000
-	}
-	clipboard := TempClip
-	Sleep, 300
-	SetTitleMatchMode, 1
-}
 
 Alert(MsgText)
 {
