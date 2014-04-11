@@ -1,31 +1,19 @@
 Todo
 	High Priority
-		Test with new IMS + plug-in. 
-		Fix InsertLocation
-		InsertRadio needs to get changed. Tests are still radio, specs are not though. Could change based on if it is sent "Yes"
-		Test focus IMS. (Old AMIIMS)
-		Clean up handlers
-		Test Product Save
-		Test Print Order Line
+		
 	Medium Priority
-		Cleanup Barcodes General.
-		Remove block nonsense.
-		Investigate using Lib
-		Add auto print
+		Should handlers have a waiting period after?
 		Create HD Form (Currently in Handler)
-		Figure out inclusion of templates
-	Low Priority
 		Test iPod form. - #Include iPod Form.ahk
+		Make extra sheet. Should have CPU Speeds and OS types?
+		Add auto print?
+		
+	Low Priority
 		I probably don't need barcode stations. Most of my code knows what location we are. - #Include Barcodes\BarcodesStations.ahk
 		Figure out how I want to do swap. Add back to RunMe. - #Include Barcodes\BarcodesSwap.ahk
-		BarcodeLaptop - Needs to be cleaned up. CPU speed has 3 repeats. Do I even want CPU Speed with templates?
-		BarcodeLaptop - clean up laptop guess work. 
-	Backburner
-		Add AHK JS calls to CIE
-			insertProduct
-			InsertLocation
-			InsertCPU
-		InsertLocation (Should be InsertLocation and AddOrderLine)
-		Change InsertText to InsertTextByName
 		Test InsertDropdown?
-		Remove junk in Functions.
+		
+	Backburner
+
+		
+		

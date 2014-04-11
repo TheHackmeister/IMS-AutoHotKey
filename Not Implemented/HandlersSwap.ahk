@@ -2,9 +2,9 @@
 {
 	Global CurrentInsertWebcam
 	If(CurrentInsertWebcam == "Yes")
-		EnterWebcam("No")
+		Enter_Webcam("No")
 	Else
-		EnterWebcam("Yes")
+		Enter_Webcam("Yes")
 }
 SwapOptical()
 {
@@ -13,21 +13,21 @@ SwapOptical()
 
 	If(Count == "2")
 	{
-		EnterOptical("DAMAGED")
+		Enter_Optical("DAMAGED")
 		return
 	}
 	
 	If(Count == "3")
 	{
-		EnterOptical("NONE/MISSING")
+		Enter_Optical("NONE/MISSING")
 		return
 	}
 	
 	If(CurrentInsertOptical == "DVDRW")
 	{
-		EnterOptical("DVD/CDRW")
+		Enter_Optical("DVD/CDRW")
 	} Else {
-		EnterOptical("DVDRW")
+		Enter_Optical("DVDRW")
 	}	
 }
 SwapUSB()
@@ -37,20 +37,20 @@ SwapUSB()
 	Count := CountSwaps("Optical", 3)
 	If(Count == 2)
 	{
-		EnterUSB("5")
+		Enter_USB("5")
 		return
 	}
 	
 	If(Count == "3")
 	{
-		EnterUSB("6")
+		Enter_USB("6")
 		return
 	}
 	
 	If(CurrentInsertUSB == "3")
-		EnterUSB("4")
+		Enter_USB("4")
 	Else 
-		EnterUSB("3")
+		Enter_USB("3")
 	
 	
 }
@@ -58,17 +58,17 @@ SwapHDMI()
 {
 	Global CurrentInsertHDMI
 	If(CurrentInsertHDMI == "Yes")
-		EnterHDMI("No")
+		Enter_HDMI("No")
 	Else
-		EnterHDMI("Yes")
+		Enter_HDMI("Yes")
 }
 SwapMemoryCard()
 {
 	Global CurrentInsertMemoryCard
 	If(CurrentInsertMemoryCard == "Yes")
-		EnterMemoryCard("No")
+		Enter_MemoryCard("No")
 	Else
-		EnterMemoryCard("Yes")
+		Enter_MemoryCard("Yes")
 }
 SwapCOA()
 {
@@ -78,18 +78,18 @@ SwapHDDCaddy()
 {
 	Global CurrentInsertHDDCaddy
 	If(CurrentInsertHDDCaddy == "Yes")
-		EnterHDDCaddy("No")
+		Enter_HDDCaddy("No")
 	Else
-		EnterHDDCaddy("Yes")
+		Enter_HDDCaddy("Yes")
 		
 }
 SwapBattery()
 {
 	Global CurrentInsertBattery
 	If(CurrentInsertBattery == "Yes")
-		EnterBattery("No")
+		Enter_Battery("No")
 	Else
-		EnterBattery("Yes")
+		Enter_Battery("Yes")
 }
 
 

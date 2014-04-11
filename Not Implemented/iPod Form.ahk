@@ -1,3 +1,70 @@
+;Move this!
+
+
+;I commented this out because it couldn't find QuickNote. I'm pretty sure it is in the ipod form file.
+;#IfWinActive Input iPod
+;::;.NHP::
+;	QuickNote("HP")
+;return
+;::;.NDIGI::;
+;	QuickNote("DIGI")
+;return
+;::;.NSCREEN::
+;	QuickNote("SCREEN")
+;return
+;::;.NLCD::
+;	QuickNote("LCD")
+;return
+;::;.NSPEAKER::
+;	QuickNote("SPEAKER")
+;return
+;::;.NHOME::
+;	QuickNote("HOME BUTTON")
+;return
+;::;.NVOL::
+;	QuickNote("VOLUME ROCKER")
+;return
+;::;.NPOWER::
+;	QuickNote("POWER BUTTON")
+;return
+;::;.NHOLD::
+;	QuickNote("HOLD SWITCH")
+;return
+;::;.NWHEEL::
+;	QuickNote("CLICK WHEEL")
+;return
+;::;.NCASE::
+;	QuickNote("CASE DAMAGE")
+;return
+;::;.NWIFI::
+;	QuickNote("NO WIFI")
+;return
+;::;.NFCAM::
+;	QuickNote("FRONT CAMERA")
+;return
+;::;.NRCAM::
+;	QuickNote("REAR CAMERA")
+;return
+;::;.NBAT::
+;	QuickNote("BATTERY", true)
+;return
+;::;.NCHARGE::
+;	QuickNote("CHARGE PORT", true)
+;return
+;::;.NHDD::
+;	QuickNote("HDD", true)
+;return
+;::;.IGSAVE::
+;	QuickSave()
+;return
+
+
+
+;Enter:: Send {Enter}{Tab}{Enter}
+;NumpadEnter:: SendInput {Enter}{Tab}{Enter}
+
+#IfWinActive
+
 ::IPODLOOP::
 EnterIpodLoop()
 return
@@ -96,7 +163,7 @@ GetSN() {
 EnterIpodLoop(Loc = "", Product="", Pod="")
 {
 Global
-;	AmIIMS()
+;	FocusIMS()
 ;	Global 25INHDDs
 ;	Global 35INHDDs
 
@@ -189,11 +256,11 @@ Global
 		Type = ""
 	}
 	
-	Product := ListLookupID(Type,Model)
+	Product := List_LookupID(Type,Model)
 	
 	If(!Product AND Model)
 	{
-		BlockOff()	
+			
 		Gui, Show
 		Send +{Tab}
 		return
