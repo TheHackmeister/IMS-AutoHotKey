@@ -1,6 +1,25 @@
 ;Move this!
 
 
+EnterCompleteProductAndConditions(ExternalID,SN, Cond, Restore,Product="",Notes = "")
+{
+	FocusIMS()
+	If(Product)
+		Enter_Product(Product)
+	Insert_TextByID("addOrderlineSN", SN)
+	Enter_OrderLine()	
+	Insert_TextByID("editOrderlineExternalAsset", ExternalID)
+	WaitForIMSLoad()
+
+	StringReplace, Notes, Notes,`n,\n,All	
+
+	Insert_AdditionalText("spec15",Notes)
+
+	EnterConditionAndSave(Cond, Restore)
+}
+
+
+
 ;I commented this out because it couldn't find QuickNote. I'm pretty sure it is in the ipod form file.
 ;#IfWinActive Input iPod
 ;::;.NHP::

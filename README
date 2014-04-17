@@ -1,18 +1,29 @@
 Todo
 	High Priority
+		Create HD Form (Currently in Handler) - Has been slimmed down. Need to include swap commands in chrome extension. 	
+		Create 3rd page.
+			CPU speed 
+			CoA 
+				Test InsertDropdown?
+			Battery and HD Caddy
+			Change Status? Good, Good Base, Broken, Low. 
+		Cracked LCD should check Fail for all.
+			Second version where cracked but boots. 
 		
 	Medium Priority
-		Create HD Form (Currently in Handler)
-		Test iPod form. - #Include iPod Form.ahk
-		Make extra sheet. Should have CPU Speeds and OS types?
-		Add auto print?
-		
+	
 	Low Priority
 		I probably don't need barcode stations. Most of my code knows what location we are. - #Include Barcodes\BarcodesStations.ahk
 		Figure out how I want to do swap. Add back to RunMe. - #Include Barcodes\BarcodesSwap.ahk
-		Test InsertDropdown?
-		
-	Backburner
+		Add auto print?
+		Test iPod form. - #Include iPod Form.ahk
 
 		
-		
+Features:
+	Checks for update
+	Products
+	Add orderline
+	CPUs
+	Screen Size
+	Notes (Adds appropriate conditions)
+	Saves

@@ -1,40 +1,3 @@
-; I don't know if these are used, but I think they are.
-EnterCompleteProduct(ExternalID,SN,Product="")
-{
-	FocusIMS()
-	If(Product)
-		Enter_Product(Product)
-	Insert_TextByID("addOrderlineSN", SN)
-	Enter_OrderLine()	
-	Insert_TextByID("editOrderlineExternalAsset", ExternalID)
-	WaitForIMSLoad()
-	Enter_Save("Pass")
-}
-
-EnterCompleteProductAndConditions(ExternalID,SN, Cond, Restore,Product="",Notes = "")
-{
-	FocusIMS()
-	If(Product)
-		Enter_Product(Product)
-	Insert_TextByID("addOrderlineSN", SN)
-	Enter_OrderLine()	
-	Insert_TextByID("editOrderlineExternalAsset", ExternalID)
-	WaitForIMSLoad()
-
-	StringReplace, Notes, Notes,`n,\n,All	
-
-	Insert_AdditionalText("spec15",Notes)
-
-	EnterConditionAndSave(Cond, Restore)
-}
-
-
-
-
-
-
-
-
 ::HDDLoop::
 EnterHDDLoop()
 return
@@ -45,12 +8,8 @@ NumpadEnter:: Send {Enter}{Tab}{Enter}
 #IfWinActive
 
 
-
-
-
 EnterHDDLoop(Size = "", Product="")
 {
-;	FocusIMS()
 	Global 25INHDDs
 	Global 35INHDDs
 	Gui, Destroy
@@ -105,6 +64,21 @@ EnterHDDLoop(Size = "", Product="")
 	
 	EnterHDDLoop(HSize,HType)
 return
+
+; I don't know if these are used, but I think they are.
+EnterCompleteProduct(ExternalID,SN,Product="")
+{
+	FocusIMS()
+	If(Product)
+		Enter_Product(Product)
+	Insert_TextByID("addOrderlineSN", SN)
+	Enter_OrderLine()	
+	Insert_TextByID("editOrderlineExternalAsset", ExternalID)
+	WaitForIMSLoad()
+;	Enter_Condition("Good");
+	Enter_Save()
+}
+
 
 swapConnector: 
 FocusIMS()
