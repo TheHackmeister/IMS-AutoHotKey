@@ -1,25 +1,3 @@
-::;.IOCPUS10::
-Enter_CPUSpeed("1.0 Ghz", "1.2 Ghz")
-return
-::;.IOCPUS14::
-Enter_CPUSpeed("1.4 Ghz", "1.5 Ghz")
-return
-::;.IOCPUS16::
-Enter_CPUSpeed("1.6 Ghz", "1.7 Ghz")
-return
-::;.IOCPUS18::
-Enter_CPUSpeed("1.8 Ghz", "1.9 Ghz")
-return
-::;.IOCPUS20::
-Enter_CPUSpeed("2.0 Ghz", "2.1 Ghz")
-return
-::;.IOCPUS22::
-Enter_CPUSpeed("2.2 Ghz", "2.3 Ghz")
-return
-::;.IOCPUS24::
-Enter_CPUSpeed("2.4 Ghz", "2.5 Ghz")
-return
-
 ::;.LapIS::
 Enter_CPUType("INTEL CORE I3", "INTEL CORE I5", "INTEL CORE I7")
 return
@@ -71,17 +49,57 @@ Enter_Notes("Will Not Display","Does not display correctly.")
 Enter_Condition("Broken")
 return
 ::;.LapNt4::
-Enter_Notes("Cracked LCD.")
-Enter_Condition("Good Base")
+Enter_Notes("Cracked LCD.", "Cracked LCD.")
+Enter_Condition("Low Grade","Good Base")
 return
 ::;.LapNt5::
-Enter_Notes("Case damage.")
+Enter_Notes("No Webcam.")
+Enter_Condition("Broken")
 return
 ::;.LapNt6::
-Enter_Notes("Keyboard.")
+Enter_Notes("Keyboard.", "Case damage.")
 return
 
+::;.LCPU10::
+Enter_CPUSpeed("1.0 Ghz", "1.2 Ghz")
+return
+::;.LCPU14::
+Enter_CPUSpeed("1.4 Ghz", "1.5 Ghz")
+return
+::;.LCPU16::
+Enter_CPUSpeed("1.6 Ghz", "1.7 Ghz")
+return
+::;.LCPU18::
+Enter_CPUSpeed("1.8 Ghz", "1.9 Ghz")
+return
+::;.LCPU20::
+Enter_CPUSpeed("2.0 Ghz", "2.1 Ghz")
+return
+::;.LCPU22::
+Enter_CPUSpeed("2.2 Ghz", "2.3 Ghz")
+return
+::;.LCPU24::
+Enter_CPUSpeed("2.4 Ghz", "2.5 Ghz")
+return
 
-
-
-
+::;.LXP::
+Enter_COA("Windows XP Home", "Windows XP Pro")
+return
+::;.LVISTA::
+Enter_COA("Windows Vista Home Premium", "Windows Vista Business")
+return
+::;.LW7::
+Enter_COA("Windows 7 Home Premium", "Windows 7 Pro")
+return
+::;.LCOA::
+Enter_COA("Legible Product Key Only", "None/unreadable")
+return
+::;.LW8::
+Enter_COA("Windows 8", "Windows 8 Pro")
+return
+::;.LBAT::
+Enter_Battery()
+return
+::;.LHDC::
+Enter_HDDCaddy()
+return

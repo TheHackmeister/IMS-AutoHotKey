@@ -59,8 +59,8 @@ Insert_Checkbox(ID, Setting)
 	} else if (Setting == "No") {
 		Setting = false
 	} 
-
-	JSText = $('input:checkbox[name="%ID%"]').prop('checked', %Setting%)	
+	;Consider doing prop('checked', setting). It will allow me to set what I want. Unneeded right now.
+	JSText = $('input:checkbox[name="%ID%"]').click();	
 	RunJavaScript(JSText)
 }		
 

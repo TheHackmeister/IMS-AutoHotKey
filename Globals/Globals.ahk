@@ -1,4 +1,5 @@
 ﻿global LastItemScanned = ""
+global LastConditionScanned = ""
 Location =
 
 #Include Globals\List_Products.ahk

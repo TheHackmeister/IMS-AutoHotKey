@@ -12,7 +12,7 @@ NONE/MISSING|10
 Legible Product Key Only|149
 None/unreadable|113
 Pre-Windows XP|112
-Windows 7 HomePremium|125
+Windows 7 Home Premium|125
 Windows 7 Pro|127
 Windows 7 Starter|126
 Windows 7 Ultimate|128
@@ -20,8 +20,8 @@ Windows 8|129
 Windows 8 Pro|130
 Windows Vista Business|122
 Windows Vista Home Basic|120
-Windows VistaHomePremium|121
-Windows VistaUltimate|123
+Windows Vista Home Premium|121
+Windows Vista Ultimate|123
 Windows XP Home|114
 Windows XP Media Center|117
 Windows XP Pro|115

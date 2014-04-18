@@ -1,14 +1,12 @@
 Todo
 	High Priority
 		Create HD Form (Currently in Handler) - Has been slimmed down. Need to include swap commands in chrome extension. 	
-		Create 3rd page.
+		Create 3rd page. (Fix the barcodes, then test). Copy picture link, insert picture from file, paste link.
 			CPU speed 
 			CoA 
 				Test InsertDropdown?
 			Battery and HD Caddy
-			Change Status? Good, Good Base, Broken, Low. 
-		Cracked LCD should check Fail for all.
-			Second version where cracked but boots. 
+			Change Status Sticker? Good, Good Base, Broken, Low. 
 		
 	Medium Priority
 	

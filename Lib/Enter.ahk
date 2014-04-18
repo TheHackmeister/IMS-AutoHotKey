@@ -12,6 +12,21 @@ SetOption(Option1 = "",Option2 = "", Option3 = "")
 	Return %PrintOption%
 }
 
+SetCondition(Option1 = "",Option2 = "", Option3 = "") 
+{
+	If (Option1 == LastConditionScanned AND Option2)
+	{
+		PrintOption = %Option2%
+	} else if (Option2 == LastConditionScanned AND Option3) {
+		PrintOption = %Option3%
+	} else if Option1 {
+		PrintOption = %Option1%	
+	} 
+	LastConditionScanned = %PrintOption%
+	Return %PrintOption%
+}
+
+
 Enter_Product(PText)
 {
 	FocusIMS()
@@ -43,7 +58,7 @@ Enter_Save()
 Enter_Condition(Option1 = "", Option2 = "", Option3 = "")
 {
 	FocusIMS()
-	Option := SetOption(Option1,Option2,Option3)
+	Option := SetCondition(Option1,Option2,Option3)
 	Insert_Condition(Option)
 }
 
@@ -61,7 +76,6 @@ Enter_ScreenSize(Option1 = "", Option2 = "")
 	Insert_TextByName("spec3",Option)
 }		
 
-;Would like to use.
 Enter_CPUSpeed(Option1 = "", Option2 = "")
 {
 	FocusIMS()
