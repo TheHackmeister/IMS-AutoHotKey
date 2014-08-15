@@ -4,6 +4,7 @@ Location =
 
 #Include Globals\List_Products.ahk
 #Include Globals\List_CPU.ahk
+#Include Globals\List_DropDowns.ahk
 #Include Globals\List_HD_Laptops.ahk
 #Include Globals\List_HD_Desktops.ahk
 #Include Globals\List_iPod_Touches.ahk

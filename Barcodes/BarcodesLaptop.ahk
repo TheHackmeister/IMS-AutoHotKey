@@ -21,39 +21,44 @@ Enter_CPUType("AMD PHENOM II", "AMD PHENOM X3", "AMD PHENOM X4")
 return
 
 ::;.Lap121::
-Enter_ScreenSize("12.1", "10.1")
+Enter_ScreenSize("10", "12")
 return
 ::;.Lap14::
-Enter_ScreenSize("14.1", "14")
+Enter_ScreenSize("14", "13")
 return
 ::;.Lap154::
-Enter_ScreenSize("15.4", "13.3")
+Enter_ScreenSize("15", "16")
 return
-::;.Lap156::
-Enter_ScreenSize("15.6", "15")
-return
+;::;.Lap156::
+;Enter_ScreenSize("15.6", "15")
+;return
 ::;.Lap17::
-Enter_ScreenSize("17", "17.3")
+Enter_ScreenSize("17", "18")
 return
 
 ::;.LapNt1::
 Enter_Notes("Will not receive power.","BIOS Lock.")
+Sleep 250
 Enter_Condition("Broken")
 return
 ::;.LapNt2::
 Enter_Notes("Will not power on.","Will not remain on.")
+Sleep 250
 Enter_Condition("Broken")
 return
 ::;.LapNt3::
 Enter_Notes("Will Not Display","Does not display correctly.")
+Sleep 250
 Enter_Condition("Broken")
 return
 ::;.LapNt4::
 Enter_Notes("Cracked LCD.", "Cracked LCD.")
+Sleep 250
 Enter_Condition("Low Grade","Good Base")
 return
 ::;.LapNt5::
 Enter_Notes("No Webcam.")
+Sleep 250
 Enter_Condition("Broken")
 return
 ::;.LapNt6::
@@ -83,7 +88,7 @@ Enter_CPUSpeed("2.4 Ghz", "2.5 Ghz")
 return
 
 ::;.LXP::
-Enter_COA("Windows XP Home", "Windows XP Pro")
+Enter_COA("Windows XP Home", "Windows XP Pro", "Windows XP Media Center")
 return
 ::;.LVISTA::
 Enter_COA("Windows Vista Home Premium", "Windows Vista Business")
@@ -92,14 +97,29 @@ return
 Enter_COA("Windows 7 Home Premium", "Windows 7 Pro")
 return
 ::;.LCOA::
-Enter_COA("Legible Product Key Only", "None/unreadable")
+Enter_COA("None/unreadable")
 return
 ::;.LW8::
 Enter_COA("Windows 8", "Windows 8 Pro")
 return
+
+
+
 ::;.LBAT::
 Enter_Battery()
 return
-::;.LHDC::
-Enter_HDDCaddy()
+::;.LOPT::
+Enter_Optical()
 return
+::;.LCAM::
+Enter_Webcam()
+return
+
+
+::;.R<1::
+Enter_RAM("LESS THAN 1 GB")
+return
+::;.R1::
+Enter_RAM("1.0 GB / 1024 MB", "2.0 GB / 2048 MB")
+return
+

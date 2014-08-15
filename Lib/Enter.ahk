@@ -27,11 +27,47 @@ SetCondition(Option1 = "",Option2 = "", Option3 = "")
 }
 
 
-Enter_Product(PText)
+Enter_Product(Option1 = "", Option2 = "")
 {
 	FocusIMS()
-	Insert_Product(PText)
+	Option := SetOption(Option1,Option2)
+	Insert_Product(Option)
 }
+
+
+
+
+
+Enter_ProductLineProduct(Option1 = "", Option2 = "")
+{
+	FocusIMS()
+	Option := SetOption(Option1,Option2)
+	Insert_ProductLineProduct(Option)
+}
+
+Enter_ProductLineCondition(Option1 = "", Option2 = "")
+{
+	FocusIMS()
+	Option := SetOption(Option1,Option2)
+	Insert_ProductLineCondition(Option)
+}
+
+Enter_ProductLineQty(Option1 = "", Option2 = "")
+{
+	FocusIMS()
+	Option := SetOption(Option1,Option2)
+	Insert_TextByID("addProductLineQTY", Option)
+}
+
+Enter_ProductLine(Location = "")
+{
+	FocusIMS()
+	Insert_LocationAndEnterOrderLine(Location)
+	WaitForIMSLoad()
+}
+
+
+
 
 Enter_OrderLine(Location = "")
 {
@@ -53,6 +89,7 @@ Enter_Save()
 	FocusIMS()
 	Insert_SaveAsset()
 	WaitForIMSLoad("True")
+	LastConditionScanned =
 }	
 		
 Enter_Condition(Option1 = "", Option2 = "", Option3 = "")
@@ -73,7 +110,7 @@ Enter_ScreenSize(Option1 = "", Option2 = "")
 {
 	FocusIMS()
 	Option := SetOption(Option1,Option2)
-	Insert_TextByName("spec3",Option)
+	Insert_Dropdown("spec43",Option)
 }		
 
 Enter_CPUSpeed(Option1 = "", Option2 = "")
@@ -84,11 +121,11 @@ Enter_CPUSpeed(Option1 = "", Option2 = "")
 }
 		
 ;Would like to use.
-Enter_COA(Option1 = "", Option2 = "")
+Enter_COA(Option1 = "", Option2 = "", Option3 = "")
 {
 	FocusIMS()
-	Option := SetOption(Option1,Option2)
-	Insert_Dropdown("spec14",Option)
+	Option := SetOption(Option1,Option2, Option3)
+	Insert_Dropdown("spec41",Option)
 }
 	
 ;Would like to use.
@@ -104,7 +141,7 @@ Enter_Battery(Option1 = "", Option2 = "")
 {
 	FocusIMS()
 	Option := SetOption(Option1,Option2)
-	Insert_Checkbox("spec20", Option)
+	Insert_Checkbox("spec38", Option)
 }				
 				
 ;Not Currently Used.
@@ -112,11 +149,9 @@ Enter_RAM(Option1 = "", Option2 = "")
 {
 	FocusIMS()
 	Option := SetOption(Option1,Option2)
-	Insert_Dropdown("spec7",Option)
+	Insert_Dropdown("spec37",Option)
 }
 
-
-;Not Currently Used.
 Enter_Webcam(Option1 = "", Option2 = "")
 {
 	FocusIMS()
@@ -124,13 +159,13 @@ Enter_Webcam(Option1 = "", Option2 = "")
 	Insert_Checkbox("spec8", Option)
 }
 	
-;Not Currently Used.
 Enter_Optical(Option1 = "", Option2 = "")
 {
 	FocusIMS()
 	Option := SetOption(Option1,Option2)
-	Insert_Dropdown("spec9",Option)
+	Insert_Checkbox("spec39",Option)
 }
+
 
 ;Not Currently Used.
 Enter_USB(Option1 = "", Option2 = "")

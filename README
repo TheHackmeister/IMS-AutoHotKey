@@ -1,14 +1,11 @@
 Todo
 	High Priority
-		Create HD Form (Currently in Handler) - Has been slimmed down. Need to include swap commands in chrome extension. 	
-		Create 3rd page. (Fix the barcodes, then test). Copy picture link, insert picture from file, paste link.
-			CPU speed 
-			CoA 
-				Test InsertDropdown?
-			Battery and HD Caddy
-			Change Status Sticker? Good, Good Base, Broken, Low. 
+		Enter High Value Scrap.
 		
 	Medium Priority
+		Change Status Sticker? Good, Good Base, Broken, Low. 
+		Consider making save, and an enter condition and save. I seem to use it a lot.
+		Monitor sheet - move Print order to bottom, then put Save good above it?
 	
 	Low Priority
 		I probably don't need barcode stations. Most of my code knows what location we are. - #Include Barcodes\BarcodesStations.ahk
@@ -25,3 +22,10 @@ Features:
 	Screen Size
 	Notes (Adds appropriate conditions)
 	Saves
+	CPU Speed
+	COA
+	Battery toggle
+	HD Caddy Toggle
+	HD Form 
+		Allows quick addition of HD to PO. 
+	Page for monitors

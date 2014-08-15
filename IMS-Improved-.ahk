@@ -9,9 +9,8 @@ Updater:
 	SetTimer, Updater, 3600000
 return
 
-#Include Barcodes\BarcodesGeneral.ahk
-#Include Barcodes\BarcodesLaptop.ahk
-#Include Barcodes\BarcodesProducts.ahk
+#Include Barcodes\Barcodes.ahk
+#Include Forms\Hd.ahk
 
 
 ;This script is dedicated to John. 

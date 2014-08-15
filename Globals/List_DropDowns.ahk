@@ -10,22 +10,21 @@ DVDRW|4
 N/A|11
 NONE/MISSING|10
 Legible Product Key Only|149
-None/unreadable|113
-Pre-Windows XP|112
-Windows 7 Home Premium|125
-Windows 7 Pro|127
-Windows 7 Starter|126
-Windows 7 Ultimate|128
-Windows 8|129
-Windows 8 Pro|130
-Windows Vista Business|122
-Windows Vista Home Basic|120
-Windows Vista Home Premium|121
-Windows Vista Ultimate|123
-Windows XP Home|114
-Windows XP Media Center|117
-Windows XP Pro|115
-Windows XP Tablet|116
+None/unreadable|270
+Windows 7 Home Premium|271
+Windows 7 Pro|272
+Windows 7 Starter|273
+Windows 7 Ultimate|274
+Windows 8|275
+Windows 8 Pro|276
+Windows Vista Business|277
+Windows Vista Home Basic|278
+Windows Vista Home Premium|279
+Windows Vista Ultimate|280
+Windows XP Home|281
+Windows XP Media Center|282
+Windows XP Pro|283
+Windows XP Tablet|284
 1 GB|15
 1.25 GB|100
 1.5 GB|38
@@ -42,4 +41,15 @@ Windows XP Tablet|116
 7 GB|156
 768 MB|14
 8 GB|103
+10|299
+12|292
+13|293
+14|294
+15|295
+16|296
+17|297
+18|298
+LESS THAN 1 GB|266
+1.0 GB / 1024 MB|257
+2.0 GB / 2048 MB|259
 )

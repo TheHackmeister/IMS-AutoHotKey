@@ -8,19 +8,27 @@ Enter_Save()
 return
 
 ::;.ProdSG::
-;Enter_Save("Good")
+Enter_Condition("Good")
+Enter_Save()
 return
 
 ::;.ProdSGB::
-;Enter_Save("Good Base")
+Enter_Condition("Good Base")
+Enter_Save()
 return
 
 ::;.ProdSB::
-;Enter_Save("Broken")
+Enter_Condition("Broken")
+Enter_Save()
 return
 
 ::;.ProdSLG::
-;Enter_Save("Low Grade")
+Enter_Condition("Low Grade")
+Enter_Save()
+return
+
+::;.CondG::
+Enter_Condition("Good","Broken")
 return
 
 

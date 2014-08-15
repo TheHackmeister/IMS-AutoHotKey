@@ -5,6 +5,30 @@ Insert_Product(Product)
 	JSText = ahkInsertProduct('%PID%', '%Product%');
 	RunJavascript(JSText)	
 }
+
+;Remove?
+Insert_LocationAndEnterProductLine(LocationInput = "")
+{
+	Global Location
+
+	If(LocationInput)
+		Location := LocationInput
+	
+	If(!Location)
+	{
+		InputBox, LocationInput, Location number,Enter your location number,,210,120
+		Location := LocationInput
+	}
+	
+	If(!Location)
+	{
+		Alert("You didn't enter any location. Exiting script.")
+		exit
+	}
+
+	JSText = ahkInsertLocationAndEnterOrderLine("%Location%");
+	RunJavaScript(JSText)
+}
 	
 Insert_LocationAndEnterOrderLine(LocationInput = "")
 {
@@ -84,11 +108,31 @@ Insert_Condition(cond)
 
 Insert_SaveAsset()
 {
-	JSText = saveAsset(getEditAssetID());
-	RunJavaScript(JSText)
+	RunJavaScript("ahkSaveAsset();")
 }		
-			
-			
+
+
+
+Insert_ProductLineCondition(cond)
+{
+	JSText = ahkInsertProductLineCondition("%cond%");
+	RunJavaScript(JSText)
+	Sleep, 500
+	WaitForIMSLoad()
+}		
+					
+Insert_ProductLineProduct(Product)
+{
+	PID := List_ProductIDLookup(Product)
+
+	JSText = ahkInsertProductLineProduct("%pid%", "%Product%");
+	RunJavaScript(JSText)
+	Sleep, 500
+	WaitForIMSLoad()
+}		
+	
+
+						
 ;Currently unused.
 Insert_AdditionalText(ID, String)
 {
@@ -107,7 +151,7 @@ Insert_Dropdown(Name, Value)
 
 	JSText =
 	(
-document.getElementsByName('%Name%')[0].value = %VID%
+document.getElementsByName('%Name%')[0].value = '%VID%';
 	)
 	RunJavaScript(JSText)
 }

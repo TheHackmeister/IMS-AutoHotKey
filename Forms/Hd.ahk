@@ -8,13 +8,13 @@ NumpadEnter:: Send {Enter}{Tab}{Enter}
 #IfWinActive
 
 
-EnterHDDLoop(Size = "", Product="", Cond="")
+EnterHDDLoop(Size = "", Product="", Cond="1")
 {
 	Global 25INHDDs
 	Global 35INHDDs
 	Gui, Destroy
-	Gui, Add, Text,, Enter External Asset Number
-	Gui, Add, Edit, vEAN, 
+	;Gui, Add, Text,, Enter External Asset Number
+	;Gui, Add, Edit, vEAN, 
 	Gui, Add, Text,, Enter Serial Number
 	Gui, Add, Edit, vSN, 
 	Gui, Add, Text,, Enter Hard Drive Type
@@ -73,22 +73,22 @@ EnterHDDLoop(Size = "", Product="", Cond="")
 		
 		
 	WinWaitNotActive, Input Hard Drive
-	EnterCompleteProduct(EAN,SN,Product,HDCond)
+	EnterCompleteHD(SN,Product,HDCond)
 	
 	EnterHDDLoop(HSize,HType,Condition)
 return
 
 ; I don't know if these are used, but I think they are.
-EnterCompleteProduct(ExternalID,SN,Product="")
+EnterCompleteHD(SN,Product="", HDCond="")
 {
 	FocusIMS()
 	If(Product)
 		Enter_Product(Product)
 	Insert_TextByID("addOrderlineSN", SN)
 	Enter_OrderLine()	
-	Insert_TextByID("editOrderlineExternalAsset", ExternalID)
+;	Insert_TextByID("editOrderlineExternalAsset", ExternalID)
 	WaitForIMSLoad()
-;	Enter_Condition("Good");
+	Enter_Condition(HDCond)
 	Enter_Save()
 }
 
