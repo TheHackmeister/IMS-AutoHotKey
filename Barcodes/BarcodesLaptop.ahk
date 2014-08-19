@@ -111,8 +111,17 @@ return
 ::;.LOPT::
 Enter_Optical()
 return
+
+
 ::;.LCAM::
 Enter_Webcam()
+return
+::;.DISPLAY::
+Enter_Display()
+return
+
+::;.LCD::
+Enter_LCD()
 return
 
 

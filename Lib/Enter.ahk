@@ -77,7 +77,6 @@ Enter_OrderLine(Location = "")
 {
 	FocusIMS()
 	Insert_LocationAndEnterOrderLine(Location)
-	WaitForPrint()
 	WaitForIMSLoad()
 }
 

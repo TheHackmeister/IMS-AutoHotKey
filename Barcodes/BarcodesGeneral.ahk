@@ -5,6 +5,7 @@ return
 
 ::;.ProdSave::
 Enter_Save()
+WaitForPrint()
 return
 
 ::;.ProdSG::

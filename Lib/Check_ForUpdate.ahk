@@ -1,7 +1,7 @@
 Check_ForUpdate(_ReplaceCurrentScript = 1, _SuppressMsgBox = 0, _CallbackFunction = "", ByRef _Information = "")
 {
 	Static Script_Name := "AHK For IMS" ;Your script name
-	, Version_Number := 1.7 ;The script's version number
+	, Version_Number := 1.8 ;The script's version number
 	, Update_URL := "http://laptop-spencer2/release/version.ini" ;The URL of the version.ini file for your script
 	, Retry_Count := 3 ;Retry count for if/when anything goes wrong
 	
