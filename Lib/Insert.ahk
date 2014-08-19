@@ -9,47 +9,47 @@ Insert_Product(Product)
 ;Remove?
 Insert_LocationAndEnterProductLine(LocationInput = "")
 {
-	Global Location
+;	Global Location
 
-	If(LocationInput)
-		Location := LocationInput
+;	If(LocationInput)
+;		Location := LocationInput
 	
-	If(!Location)
-	{
-		InputBox, LocationInput, Location number,Enter your location number,,210,120
-		Location := LocationInput
-	}
+;	If(!Location)
+;	{
+;		InputBox, LocationInput, Location number,Enter your location number,,210,120
+;		Location := LocationInput
+;	}
 	
-	If(!Location)
-	{
-		Alert("You didn't enter any location. Exiting script.")
-		exit
-	}
+;	If(!Location)
+;	{
+;		Alert("You didn't enter any location. Exiting script.")
+;		exit
+;	}
 
-	JSText = ahkInsertLocationAndEnterOrderLine("%Location%");
+	JSText = ahkInsertLocationAndEnterOrderLine();
 	RunJavaScript(JSText)
 }
 	
 Insert_LocationAndEnterOrderLine(LocationInput = "")
 {
-	Global Location
+;	Global Location
+;
+;	If(LocationInput)
+;		Location := LocationInput
+;	
+;	If(!Location)
+;	{
+;		InputBox, LocationInput, Location number,Enter your location number,,210,120
+;		Location := LocationInput
+;	}
+;	
+;	If(!Location)
+;	{
+;		Alert("You didn't enter any location. Exiting script.")
+;		exit
+;	}
 
-	If(LocationInput)
-		Location := LocationInput
-	
-	If(!Location)
-	{
-		InputBox, LocationInput, Location number,Enter your location number,,210,120
-		Location := LocationInput
-	}
-	
-	If(!Location)
-	{
-		Alert("You didn't enter any location. Exiting script.")
-		exit
-	}
-
-	JSText = ahkInsertLocationAndEnterOrderLine("%Location%");
+	JSText = ahkInsertLocationAndEnterOrderLine();
 	RunJavaScript(JSText)
 }
 		
@@ -74,15 +74,11 @@ Insert_Radio(ID, Setting)
 	JSText = $('input:radio[name="%ID%"]:eq(%Setting%)').attr('checked', "checked");
 	RunJavaScript(JSText)
 }
-	
-Insert_Checkbox(ID, Setting)
+
+;Don't need Setting. I'm keeping it to prevent tracking down where it is called. 	
+Insert_Checkbox(ID, Setting = "")
 {
-	If(Setting == "Yes")
-	{
-		Setting = true
-	} else if (Setting == "No") {
-		Setting = false
-	} 
+
 	;Consider doing prop('checked', setting). It will allow me to set what I want. Unneeded right now.
 	JSText = $('input:checkbox[name="%ID%"]').click();	
 	RunJavaScript(JSText)
@@ -103,6 +99,12 @@ Insert_TextByName(ID, String)
 Insert_Condition(cond)
 {
 	JSText = ahkInsertCondition("%cond%");
+	RunJavaScript(JSText)
+}		
+
+Insert_Test(test)
+{
+	JSText = ahkInsertTest("%test%");
 	RunJavaScript(JSText)
 }		
 

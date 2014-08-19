@@ -8,7 +8,7 @@ return
 Enter_CPUType("INTEL PENTIUM M", "INTEL CELERON M", "INTEL PENTIUM 4")
 return
 ::;.LapDC::
-Enter_CPUType("INTEL PENTIUM DUAL-CORE", "INTEL CELERON (POST PENTIUM M)")
+Enter_CPUType("INTEL PENTIUM DUAL CORE", "INTEL CELERON DUAL CORE")
 return
 ::;.LapTur::
 Enter_CPUType("AMD TURION 64 X2", "AMD Turion II", "AMD TURION 64")
@@ -120,6 +120,15 @@ return
 Enter_RAM("LESS THAN 1 GB")
 return
 ::;.R1::
-Enter_RAM("1.0 GB / 1024 MB", "2.0 GB / 2048 MB")
+Enter_RAM("1.0 GB / 1024 MB", "1.5 GB / 1536 MB")
+return
+::;.R2::
+Enter_RAM("2.0 GB / 2048 MB")
+return
+::;.RRem::
+Enter_RAM("RAM REMOVED / UNREMOVABLE")
 return
 
+::;.WIN8::
+Enter_Win8()
+return

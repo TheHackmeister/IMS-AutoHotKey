@@ -34,7 +34,12 @@ Enter_Product(Option1 = "", Option2 = "")
 	Insert_Product(Option)
 }
 
-
+Enter_Win8(Option1 = "", Option2 = "")
+{
+	FocusIMS()
+	Option := SetOption(Option1,Option2)
+	Insert_Checkbox("spec12", Option)
+}
 
 
 
@@ -68,7 +73,6 @@ Enter_ProductLine(Location = "")
 
 
 
-
 Enter_OrderLine(Location = "")
 {
 	FocusIMS()
@@ -76,6 +80,26 @@ Enter_OrderLine(Location = "")
 	WaitForPrint()
 	WaitForIMSLoad()
 }
+
+
+Enter_Webcam()
+{
+	FocusIMS()
+	Insert_Test("test21")
+}
+
+Enter_Display()
+{
+	FocusIMS()
+	Insert_Test("test32")
+}
+Enter_LCD()
+{
+	FocusIMS()
+	Insert_Test("test28")
+}
+
+
 
 Enter_Notes(Option1 = "", Option2 = "")
 {
@@ -152,12 +176,6 @@ Enter_RAM(Option1 = "", Option2 = "")
 	Insert_Dropdown("spec37",Option)
 }
 
-Enter_Webcam(Option1 = "", Option2 = "")
-{
-	FocusIMS()
-	Option := SetOption(Option1,Option2)
-	Insert_Checkbox("spec8", Option)
-}
 	
 Enter_Optical(Option1 = "", Option2 = "")
 {
